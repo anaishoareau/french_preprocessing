@@ -14,4 +14,7 @@ setup(name='french_preprocessing',
       url='https://github.com/anaishoareau/preprocessing',
       author='Anaïs HOAREAU',
       packages=find_packages(),
+      package_data={'french_preprocessing': ['data/lexique.txt', 'data/lexique_ss_accent.txt',
+                                             'data/lexique_ac_accent.txt']},
+      include_package_data=True,
       install_requires=['spacy','nltk'])
