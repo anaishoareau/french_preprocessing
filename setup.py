@@ -13,7 +13,6 @@ setup(name='french_preprocessing',
       description='French preprocessing project with tools for tokenisation, simplification, grammatical tagging (Part-of-Speech tagging) and lemmatization',
       url='https://github.com/anaishoareau/preprocessing',
       author='Anaïs HOAREAU',
-      package_data={'': ['*.txt']},
       include_package_data=True,
       packages=find_packages(),
       install_requires=['spacy','nltk'])
