@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Jul 25 08:43:56 2019
 
-@author: anais_hoareau
+"""
+Auteur : Anaïs HOAREAU
+Date : 07/2019
+GitHub : https://github.com/anaishoareau
+Linkedin : https://www.linkedin.com/in/ana%C3%AFs-hoareau-a2a042183/
 """
 
