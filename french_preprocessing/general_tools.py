@@ -82,23 +82,23 @@ def lexique383_tag_reduction(tag):
     return nouveau_tag
 
 # Fonction qui permet de générer les formes conjuguées des verbes du 1er groupe  
-def conjug_1(first_group_verb, category):  
+def conjug_1(first_group_verb):  
     ending = ['er', 'e', 'es', 'ons', 'ez', 'ent', 'é', 'ais', 'ait', 'ions', 'iez', 'aient', 'ai', 'as', 'a', 'âmes',
                    'âtes', 'èrent', 'erai', 'eras', 'era', 'erons', 'erez', 'eront', 'erais', 'erait', 'erions', 'eriez',
                    'eraient', 'asse', 'asses', 'ât', 'assions', 'assiez', 'assent', 'ant']
     conjug = []
     for en in ending:
-        conjug.append([first_group_verb[:-2]+en, first_group_verb, 'v', category])
+        conjug.append(first_group_verb[:-2]+en)
     return conjug
 
 # Fonction qui permet de générer les formes conjuguées des verbes du 2eme groupe 
-def conjug_2(second_group_verb, category):
+def conjug_2(second_group_verb):
     ending = ['ir', 'is', 'it', 'issons', 'issez', 'issent', 'issais', 'issait', 'issions', 
                      'issiez', 'issaient', 'îmes', 'îtes', 'irent', 'irai', 'iras', 'ira', 'irons', 
                      'irez', 'iront', 'irais', 'irait', 'irions', 'iriez', 'iraient', 'isse', 'isses', 
                      'issions', 'issiez', 'issent', 'i', 'issant']
     conjug = []
     for en in ending:
-        conjug.append([second_group_verb[:-2]+en, second_group_verb, 'v', category])
+        conjug.append(second_group_verb[:-2]+en)
     return conjug
                 
