@@ -49,7 +49,7 @@ class FrenchPreprocessing(object):
     # - prend en argument une phrase à tokeniser (string)
     # - renvoie une liste contenant les mots de la phrase tokenisée
     def tokenize_and_simplify(self, string):
-        doc = self.nlp(string)
+        doc = self.nlp(string.lower())
         tokenized_list_of_string = []
         for token in doc:
             if (token.is_stop == False and token.is_punct == False and token.text != ' ' and token.text != '  '
