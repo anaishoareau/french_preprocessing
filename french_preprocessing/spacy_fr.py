@@ -17,7 +17,7 @@ class SpacyFr(object):
         try:
             self.nlp = spacy.load('fr_core_news_sm')
         except:
-            os.system("python -m spacy download 'fr_core_news_sm'")
+            os.system('python -m spacy download fr_core_news_sm')
             self.nlp = spacy.load('fr_core_news_sm')
         
         
