@@ -101,41 +101,29 @@ class LexiqueTools(object):
                     self.lexique_ss_accent[word][tag]=lemma
     
     # Méthode qui permet de supprimer un élement des lexiques
-    # Prend en argument le mot à supprimer et optionnellement son tag (si on ne veut supprimer qu'une version du mot)
+    # Prend en argument le mot à supprimer et son tag (si on ne veut supprimer qu'une version du mot)
     # Ne retourne rien
-    def remove_element(self, word, tag = 'all'):
-        
-        if tag == 'all':
-            word_ss_accent = remove_accents(word)
-            if word != word_ss_accent:
-                del self.lexique[word]
-                # Le mot a des accents, il faut supprimer la version sans accents aussi
-                # Mais sans le tag on risque de supprimer des mots sans le vouloir
-                # Ex : Si on veut supprimer "fatigué" dans sa version sans accent
-                # On supprime "fatigue", l'adjectif sans accent, mais aussi le nom : "la fatigue"
-                # On ne réalise donc pas cette action
-                print('Le mot est aussi écrit dans sa version sans accent, il faut préciser le tag pour supprimer la version sans accent.')
-            else:
-                # Le mot n'a pas d'accents
-                del self.lexique[word]
-                del self.lexique_ss_accent[word]
+    def remove_element(self, word, tag):
+        tag_list = ['v', 'nc', 'adj', 'c', 'npp', 'adv', 'det', 'pro', 'prep', 'i', 'ponct', 'cl', 'et']
+        if tag not in tag_list:
+            print("ERROR tag not in the list : 'v', 'nc', 'adj', 'c', 'npp', 'adv', 'det', 'pro', 'prep', 'i', 'ponct', 'cl', 'et'")
+            return
+        word_ss_accent = remove_accents(word)
+        if word != word_ss_accent:
+            # Le mot à donc des accents et il existe une version de lui sans accent
+            # on supprime le mot dans ses deux versions dans le lexique
+            del self.lexique[word][tag]
+            del self.lexique[word_ss_accent][tag]
+            # On supprime le mot dans sa version avec accents dans le lexique_ac_accent
+            del self.lexique_ac_accent[word][tag]
+            # On supprime le mot dans sa version sans accent dans le lexique_ss_accent
+            del self.lexique_ss_accent[word_ss_accent][tag]
         else:
-            word_ss_accent = remove_accents(word)
-            if word != word_ss_accent:
-                # Le mot à donc des accents et il existe une version de lui sans accent
-                # on supprime le mot dans ses deux versions dans le lexique
-                del self.lexique[word][tag]
-                del self.lexique[word_ss_accent][tag]
-                # On supprime le mot dans sa version avec accents dans le lexique_ac_accent
-                del self.lexique_ac_accent[word][tag]
-                # On supprime le mot dans sa version sans accent dans le lexique_ss_accent
-                del self.lexique_ss_accent[word_ss_accent][tag]
-            else:
-                # Le mot n'a pas d'accent
-                # On le supprime dans le lexique
-                del self.lexique[word][tag]
-                # On le supprime dans le lexique_ss_accent
-                del self.lexique_ss_accent[word][tag]
+            # Le mot n'a pas d'accent
+            # On le supprime dans le lexique
+            del self.lexique[word][tag]
+            # On le supprime dans le lexique_ss_accent
+            del self.lexique_ss_accent[word][tag]
      
     # Méthode de mise à jour des lexiques (ajouts et réécriture) 
     # pour un dictionnaire correctement formé
