@@ -16,6 +16,7 @@ Vérifier que la commande pip et que le package python git (commande : pip insta
 Les versions utilisées sont :
 
 nltk : 3.4
+
 spaCy : 2.1.6
 
 (Elles ont été installées avec la commande pip)
@@ -122,29 +123,35 @@ of HLT-NAACL 2003, pp. 252-259.
 
 #### Intialisation de la classe FrenchPreprocessing :
 
+from french_preprocessing.french_preprocessing import FrenchPreprocessing
 
-java_path = 'C:\\Program Files\\Java\\jre1.8.0_211\\bin\\java.exe'
-fp = FrenchPreprocessing(java_path)
+fp = FrenchPreprocessing(java_path = 'C:\\Program Files\\Java\\jre1.8.0_211\\bin\\java.exe')
 
 #### Méthodes de la classe FrenchPreprocessing :
 
 - fp.tokenize_and_simplify(string)
+
 Prend une string en entrée et retourne une liste de string formée des tokens 
 de la string d'entrée, après l'application des simplifications : [token1, token2]
 
 - fp.tag(list_of_string)
+
 (Cette méthode s'applique sur une string ayant subit le prétraitement 
 précédent fp.tokenize_and_simplify(string))
+
 Prend une liste de string en entrée et retourne une liste de
 liste de deux strings du type : [[token1,tag], [token2,tag2]]
 
 - fp.lemmatize(list_word_tag)
+
 (Cette méthode s'applique sur une string ayant subit les prétraitements précédents
 fp.tag(fp.tokenize_and_simplify(string)))
+
 Prend une liste de liste de deux strings en entrée du type : [[token1,tag], [token2,tag2]], 
 et retourne une string des lemmes des tokens de la liste : "lemma_token_1 lemma_token_2".
 
 - fp.preprocessing(string)
+
 Prend une string en entrée et lui applique tous les traitements précédents. 
 Cette méthode retourne donc la string ayant subit un pré-processing complet. 
 
@@ -173,6 +180,7 @@ lt = LexiqueTools()
 #### Méthodes de la classe FrenchPreprocessing :
 
 - lt.in_lexique(word)
+
 Prend une string en entrée, renvoie False si le mot n'est pas dans le dictionnaire, sinon
 renvoie la valeur associée à la string dans le dictionnaire.
 
@@ -183,6 +191,7 @@ lt.in_lexique('mangé') -> {'v': 'manger', 'adj': 'mangé'}
 lt.in_lexique('cemotnexistepas') -> False
 
 - lt.lexique_rewrite()
+
 Ne prend rien en argument et ne renvoie rien, sert à réécrire les lexiques dans 
 les différents fichiers textes lorsque des modifications ont eu lieu.
 
@@ -190,11 +199,13 @@ Doit être utilisée après les ajouts ou les suppressions de mots,
 sinon les changements ne sont pas pris en compte.
 
 - lt.add_element(word, lemma, tag)
+
 Prend en argument une string, son lemme associé, son tag et ne renvoie rien. 
 Cette méthode ajoute le nouvel élément (word, lemma, tag) au dictionnaire, ou 
 ne fait rien s'il y est déjà.
 
 - lt.remove_element(word, tag)
+
 Prend en argument le mot à supprimer et son tag, ne revoie rien.
 Supprime tag associé au mot désiré ou ne fais rien si le tag n'existe 
 pas dans le dictionnaire associé au mot.
@@ -210,6 +221,7 @@ lt.in_lexique('mangé')
 > {'adj': 'mangé'}
 
 - lt.lexique_update(dictionary)
+
 Prend en argument le dictionnaire des mots à ajouter au lexique, ne renvoie rien.
 Réalise une sucession d'ajouts des mots de "dictionnary" dans le lexique.
 
@@ -237,6 +249,7 @@ from french_preprocessing.general_tools import conjug_1, conjug_2
 #### Fonctions de general_tools.py :
 
 - conjug_1(first_group_verb)
+
 Prend en argument un verbe du 1er groupe dans sa forme canonique, 
 renvoie la liste des formes conjuguées de ce verbe.
 
@@ -245,6 +258,7 @@ conjug_1('manger')
 > ['manger', 'mange', 'manges', 'mangons', 'mangez', 'mangent', 'mangé', 'mangais', 'mangait', 'mangions', 'mangiez', 'mangaient', 'mangai', 'mangas', 'manga', 'mangâmes', 'mangâtes', 'mangèrent', 'mangerai', 'mangeras', 'mangera', 'mangerons', 'mangerez', 'mangeront', 'mangerais', 'mangerait', 'mangerions', 'mangeriez', 'mangeraient', 'mangasse', 'mangasses', 'mangât', 'mangassions', 'mangassiez', 'mangassent', 'mangant']
 
 - conjug_2(second_group_verb)
+
 Prend en argument un verbe du 2eme groupe dans sa forme canonique, 
 renvoie la liste des formes conjuguées de ce verbe.
 
@@ -255,6 +269,7 @@ conjug_1('réussir')
 ## Autres fonctions présentes (utilisées dans les autres fichiers du package)
 
 - remove_accents(string)
+
 Prend en argument une string possiblement avec des accents,
 renvoie la même string sans accent.
 
@@ -263,6 +278,7 @@ remove_accents('mangé')
 > mange
 
 - stanford_tag_reduction(tag)
+
 Prend en argument un tag et renvoie son tag réduit. 
 
 Tag d'entrée : 'A', 'ADJ', 'ADJWH', 'ADV', 'ADVWH', 'C', 'CC', 'CL', 'CLO', 'CLR', 'CLS', 'CS', 
@@ -272,6 +288,7 @@ Tag d'entrée : 'A', 'ADJ', 'ADJWH', 'ADV', 'ADVWH', 'C', 'CC', 'CL', 'CLO', 'CL
 Tag de sortie : 'v', 'nc', 'adj', 'c', 'npp', 'adv', 'det', 'pro', 'prep', 'i', 'ponct', 'cl', 'et'
 
 - lexique383_tag_reduction(tag)
+
 Prend en argument un tag et renvoie son tag réduit. 
 
 Tag d'entrée : 'ADV', 'ADJ','PRO', 'PRE', 'NOM', 'VER', 'ONO', 'CON', 'AUX', 'ART', 'EXP'
