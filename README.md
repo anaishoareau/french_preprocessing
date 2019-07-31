@@ -29,10 +29,13 @@ Il faudra le path du java.exe pour instancier la classe FrenchPreprocessing, par
 ### Création d'un outil complet de préprocessing pour le français : 
 
 - Tokenisation : Transformation de texte en tokens (unités lexicales)
+
 - Simplification : Supression des stopwords (mots à faible valeur lexicale comme 'le', 
 "t'", 'dring'...), retrait de la ponctuation
+
 - Tagging : Etiquetage grammatical (Part-of-speech tagging), autrement dit, l'association 
 de tags grammaticaux (ex: 'nc' pour nom commun, 'v' pour verbe...) aux tokens d'un texte
+
 - Lemmatisation : Remplacement des tokens d'un texte par leur lemme ("forme canonique" 
 du mot, utilisée dans les dictionnaires)
 
