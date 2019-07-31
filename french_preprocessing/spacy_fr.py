@@ -17,6 +17,13 @@ class SpacyFr(object):
         try:
             self.nlp = spacy.load('fr_core_news_sm')
         except:
+            # Si il y a besoin de préciser le proxy, il faut rajouter les lignes suivantes :
+            #proxy='nom de votre proxy'
+            #os.environ['http_proxy'] = proxy
+            #os.environ['HTTP_PROXY'] = proxy
+            #os.environ['https_proxy'] = proxy
+            #os.environ['HTTPS_PROXY'] = proxy
+            
             os.system('python -m spacy download fr_core_news_sm')
             self.nlp = spacy.load('fr_core_news_sm')
         
