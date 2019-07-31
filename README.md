@@ -143,20 +143,20 @@ de la string d'entrée, après l'application des simplifications : [token1, toke
 précédent fp.tokenize_and_simplify(string))
 
 Prend une liste de string en entrée et retourne une liste de tuples de string 
-du type : [(token1,tag), (token2,tag2)]
+du type : [(token1, tag1), (token2, tag2)]
 
 - fp.lemmatize(list_word_tag)
 
-(Cette méthode s'applique sur une string ayant subit les prétraitements précédents
+(Cette méthode s'applique sur une string ayant subi les prétraitements précédents
 fp.tag(fp.tokenize_and_simplify(string)))
 
-Prend une liste de tuples de string en entrée du type : [(token1,tag), (token2,tag2)], 
+Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], 
 et retourne une string des lemmes des tokens de la liste : "lemma_token_1 lemma_token_2".
 
 - fp.preprocessing(string)
 
 Prend une string en entrée et lui applique tous les traitements précédents. 
-Cette méthode retourne donc la string ayant subit un pré-processing complet. 
+Cette méthode retourne donc la string ayant subi un pré-processing complet. 
 
 ##### Exemple :
 
