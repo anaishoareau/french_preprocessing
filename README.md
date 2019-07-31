@@ -66,7 +66,7 @@ sans compromettre les fichiers texte.
 aux tags du StanfordPOSTagger, et aux tags du Lexique 3.83), supprimer les accents d'un mot, obtenir 
 toutes les formes conjuguées des verbes réguliers du français (1er et 2ème groupe).
 
-### SOURCES ET CREDITS : 
+### Sources et crédits 
 
 #### LEXIQUE 3.83 : 
 
