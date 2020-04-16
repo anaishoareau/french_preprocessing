@@ -159,17 +159,21 @@ Cette méthode retourne donc la string ayant subi un pré-processing complet.
 
 ##### Exemple :
 
+```python
+
 from french_preprocessing.french_preprocessing import FrenchPreprocessing
 
 fp = FrenchPreprocessing(java_path = 'C:\\Program Files\\Java\\jre1.8.0_211\\bin\\java.exe')
 
-string_entree = "La vie est si belle aujourd'hui ! Je pense que tu devrais aller observer les loutres dans leurs habitats naturels..."
+string_entree = "La vie est si belle aujourd'hui ! Je pense que tu devrais aller observer les loutres dans leurs habitats naturels... En plus, il y en a 20% de plus que d'habitude sur la côte."
 
 string_sortie = fp.preprocessing(string_entree)
 
 print(string_sortie)
 
-> vie belle je penser tu devoir aller observer loutre habitat naturel ... plus il 20 pourcent plus habitude côte
+>>> vie belle je penser tu devoir aller observer loutre habitat naturel ... plus il 20 pourcent plus habitude côte
+
+```
 
 ## lexique_tools.py : Détail des méthodes et exemples d'utilisation
 
