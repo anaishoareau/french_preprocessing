@@ -5,11 +5,13 @@ tokenisation, simplification, tagging (Part-of-Speech tagging) et lemmatisation.
 
 ## Installation
 
-Vérifier que la commande pip et que le package python git (commande : pip install git) sont installés.
+Vérifier que la commande pip est installée, ainsi que git : https://packaging.python.org/tutorials/installing-packages/
 
-#### Pour installer le package french_preprocessing, executer la commande (dans anaconda prompt par exemple) :
+#### Pour installer le package french_preprocessing, executer la commande :
 
-#### pip install git+https://github.com/anaishoareau/french_preprocessing.git
+```bash 
+pip install git+https://github.com/anaishoareau/french_preprocessing.git
+```
 
 #### ATTENTION : Cette commande installe aussi les dépendances (les packages python spaCy et nltk). Si vous rencontrez des problèmes, il faut les installer à part.
 
@@ -119,41 +121,49 @@ of HLT-NAACL 2003, pp. 252-259.
 
 #### Intialisation de la classe FrenchPreprocessing :
 
+```python
 from french_preprocessing.french_preprocessing import FrenchPreprocessing
 
 fp = FrenchPreprocessing(java_path = 'C:\\Program Files\\Java\\jre1.8.0_211\\bin\\java.exe')
-
+```
 #### Méthodes de la classe FrenchPreprocessing :
 
-- fp.tokenize(string)
+```python 
+fp.tokenize(string)
+```
 
 Prend une string en entrée et retourne une liste de string formée des tokens 
 de la string d'entrée en enlevant les symboles inutiles : [token1, token2]
 
-- fp.tag(list_of_string)
+```python 
+fp.tag(list_of_string)
+```
 
 (Cette méthode s'applique sur une string ayant subit le prétraitement fp.tokenize(string))
 
 Prend une liste de string en entrée et retourne une liste de tuples de string 
 du type : [(token1, tag1), (token2, tag2)].
 
-- fp.delete_stop_words_and_punct(list_word_tag)
+```python 
+fp.delete_stop_words_and_punct(list_word_tag)
+```
 
 (Cette méthode s'applique sur un objet ayant subit le prétraitement fp.tag(fp.tokenize(string)))
 
 Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], 
 transforme les majuscules en minuscules, enlève les stopwords et la ponctuation, et retourne un objet du même type. 
 
-- fp.lemmatize(list_word_tag)
-
+```python 
+fp.lemmatize(list_word_tag)
+```
 (Cette méthode s'applique sur un objet ayant subit le prétraitement fp.delete_stop_words_and_punct(fp.tag(fp.tokenize(string))))
 
 Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], 
 et retourne une string des lemmes des tokens de la liste : "lemma_token_1 lemma_token_2".
 
-
-- fp.preprocessing(string)
-
+```python 
+fp.preprocessing(string)
+```
 Prend une string en entrée et lui applique tous les traitements précédents. 
 Cette méthode retourne donc la string ayant subi un pré-processing complet. 
 
@@ -179,9 +189,11 @@ print(string_sortie)
 
 #### Intialisation de la classe LexiqueTools :
 
+```python 
 from french_preprocessing.lexique_tools import LexiqueTools
 
 lt = LexiqueTools()
+```
 
 #### Méthodes de la classe FrenchPreprocessing :
 
@@ -192,10 +204,13 @@ renvoie la valeur associée à la string dans le dictionnaire.
 
 ##### Exemple :
 
-lt.in_lexique('mangé') -> {'v': 'manger', 'adj': 'mangé'}
+```python 
+lt.in_lexique('mangé')
+>>>{'v': 'manger', 'adj': 'mangé'}
 
-lt.in_lexique('cemotnexistepas') -> False
-
+lt.in_lexique('cemotnexistepas')
+>>> False
+```
 - lt.lexique_rewrite()
 
 Ne prend rien en argument et ne renvoie rien, sert à réécrire les lexiques dans 
@@ -218,13 +233,15 @@ pas dans le dictionnaire associé au mot.
 
 ##### Exemple : 
 
+```python 
 lt.in_lexique('mangé')
-> {'v': 'manger', 'adj': 'mangé'}
+>>> {'v': 'manger', 'adj': 'mangé'}
 
 lt.remove_element('mangé', 'v')
 
 lt.in_lexique('mangé')
-> {'adj': 'mangé'}
+>>> {'adj': 'mangé'}
+```
 
 - lt.lexique_update(dictionary)
 
@@ -233,24 +250,28 @@ Réalise une sucession d'ajouts des mots de "dictionnary" dans le lexique.
 
 ##### Exemple :
 
+```python 
 lt.in_lexique('mangé')
-> {'adj': 'mangé'}
+>>> {'adj': 'mangé'}
 
 dictionnary = {'mangé':{'v':'manger'}, 'nouveaumot':{'nc':'nouveaulemme', 'v':'nouveaulemme2'}}
 
 lt.lexique_update(dictionary)
 
 lt.in_lexique('mangé')
-> {'v':'manger','adj': 'mangé'}
+>>> {'v':'manger','adj': 'mangé'}
 
 lt.in_lexique('nouveaumot')
-> {'nc':'nouveaulemme', 'v':'nouveaulemme2'}
+>>> {'nc':'nouveaulemme', 'v':'nouveaulemme2'}
+```
 
 ##### ATTENTION : Après chaque série de manipulations, il est nécessaire de réécrire les lexiques à l'aide de la méthode : lexique_rewrite().
 
 ## general_tools.py : Détail de deux fonctions utiles et exemples d'utilisation
 
+```python 
 from french_preprocessing.general_tools import conjug_1, conjug_2
+```
 
 #### Fonctions de general_tools.py :
 
@@ -260,17 +281,22 @@ Prend en argument un verbe du 1er groupe dans sa forme canonique,
 renvoie la liste des formes conjuguées de ce verbe.
 
 ##### Exemple :
-conjug_1('manger')
-> ['manger', 'mange', 'manges', 'mangons', 'mangez', 'mangent', 'mangé', 'mangais', 'mangait', 'mangions', 'mangiez', 'mangaient', 'mangai', 'mangas', 'manga', 'mangâmes', 'mangâtes', 'mangèrent', 'mangerai', 'mangeras', 'mangera', 'mangerons', 'mangerez', 'mangeront', 'mangerais', 'mangerait', 'mangerions', 'mangeriez', 'mangeraient', 'mangasse', 'mangasses', 'mangât', 'mangassions', 'mangassiez', 'mangassent', 'mangant']
 
+```python 
+conjug_1('manger')
+>>> ['manger', 'mange', 'manges', 'mangons', 'mangez', 'mangent', 'mangé', 'mangais', 'mangait', 'mangions', 'mangiez', 'mangaient', 'mangai', 'mangas', 'manga', 'mangâmes', 'mangâtes', 'mangèrent', 'mangerai', 'mangeras', 'mangera', 'mangerons', 'mangerez', 'mangeront', 'mangerais', 'mangerait', 'mangerions', 'mangeriez', 'mangeraient', 'mangasse', 'mangasses', 'mangât', 'mangassions', 'mangassiez', 'mangassent', 'mangant']
+```
 - conjug_2(second_group_verb)
 
 Prend en argument un verbe du 2eme groupe dans sa forme canonique, 
 renvoie la liste des formes conjuguées de ce verbe.
 
 ##### Exemple :
+
+```python 
 conjug_1('réussir')
-> ['réussir', 'réussis', 'réussit', 'réussissons', 'réussissez', 'réussissent', 'réussissais', 'réussissait', 'réussissions', 'réussissiez', 'réussissaient', 'réussîmes', 'réussîtes', 'réussirent', 'réussirai', 'réussiras', 'réussira', 'réussirons', 'réussirez', 'réussiront', 'réussirais', 'réussirait', 'réussirions', 'réussiriez', 'réussiraient', 'réussisse', 'réussisses', 'réussissions', 'réussissiez', 'réussissent', 'réussi', 'réussissant']
+>>> ['réussir', 'réussis', 'réussit', 'réussissons', 'réussissez', 'réussissent', 'réussissais', 'réussissait', 'réussissions', 'réussissiez', 'réussissaient', 'réussîmes', 'réussîtes', 'réussirent', 'réussirai', 'réussiras', 'réussira', 'réussirons', 'réussirez', 'réussiront', 'réussirais', 'réussirait', 'réussirions', 'réussiriez', 'réussiraient', 'réussisse', 'réussisses', 'réussissions', 'réussissiez', 'réussissent', 'réussi', 'réussissant']
+```
 
 ## Autres fonctions présentes (utilisées dans les autres fichiers du package)
 
@@ -280,8 +306,11 @@ Prend en argument une string possiblement avec des accents,
 renvoie la même string sans accent.
 
 ##### Exemple :
+
+```python 
 remove_accents('mangé')
-> mange
+>>> mange
+```
 
 - stanford_tag_reduction(tag)
 
