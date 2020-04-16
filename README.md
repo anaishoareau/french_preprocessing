@@ -19,9 +19,9 @@ nltk : 3.4
 
 spaCy : 2.1.6
 
-(Elles ont été installées avec la commande pip)
+(Elles ont normalement été installées avec la commande pip)
 
-#### Il est également nécessaire d'installer java pour que le StanfordPOSTagger fonctionne. 
+#### Il est également nécessaire d'installer java (JRE) pour que le StanfordPOSTagger fonctionne. 
 Il faudra le path du java.exe pour instancier la classe FrenchPreprocessing, par exemple : java_path = "C:/Program Files/Java/jre1.8.0_211/bin/java.exe"
 
 ## Objectifs et réalisations du projet
@@ -30,20 +30,20 @@ Il faudra le path du java.exe pour instancier la classe FrenchPreprocessing, par
 
 - Tokenisation : Transformation de texte en tokens (unités lexicales)
 
+- Grammatical tagging : Etiquetage grammatical (Part-of-speech tagging), autrement dit, l'association 
+de tags grammaticaux (ex: 'nc' pour nom commun, 'v' pour verbe...) aux tokens d'un texte
+
 - Simplification : Supression des stopwords (mots à faible valeur lexicale comme 'le', 
 "t'", 'dring'...), retrait de la ponctuation
-
-- Tagging : Etiquetage grammatical (Part-of-speech tagging), autrement dit, l'association 
-de tags grammaticaux (ex: 'nc' pour nom commun, 'v' pour verbe...) aux tokens d'un texte
 
 - Lemmatisation : Remplacement des tokens d'un texte par leur lemme ("forme canonique" 
 du mot, utilisée dans les dictionnaires)
 
 ### Précisions sur le travail effectué
 
-- Utilisation de spaCy pour la Tokenisation, redéfinition des stopwords pour la simplification.
+- Utilisation de spaCy pour la tokenisation.
 
-- Synthétisation de trois lexiques : Lexique des formes fléchies du français (LEFFF), 
+- Synthétisation de trois lexiques en un seul (lexique.txt): Lexique des formes fléchies du français (LEFFF), 
 le Lexique 3.83, et le lexique utilisé par la librarie python spaCy pour 
 créer une base de données développée pour l'outil de lemmatisation.
 
@@ -53,18 +53,11 @@ en paramètre de l'outil de lemmatisation. Les tags du StanfordPOSTagger sont au
 Les tags après uniformisation sont réduits à : 'v', 'nc', 'adj', 'c', 'npp', 'adv', 'det', 'pro', 
 'prep', 'i', 'ponct', 'cl', 'et'
 
-- Création de deux lexiques à partir du lexique.txt (complet) : lexique_ac_accent.txt 
-(contenant les mots avec accents) et lexique_ss_accent.txt (contenant les mots sans accents et
-les versions sans accent des mots présentant des accents). Ce choix est adapté à 
-l'utilisation du lemmatiseur pour l'étude de textes extraits des réseaux sociaux 
-(où l'accentuation est parfois omise).
-
 - Développement d'outils dans lexique_tools.py pour la modification du lexique afin de l'augmenter facilement, 
 sans compromettre les fichiers texte.
 
 - Création d'outils généraux dans general_tools.py pour appliquer la réduction de tag (réduction adaptée 
-aux tags du StanfordPOSTagger, et aux tags du Lexique 3.83), supprimer les accents d'un mot, obtenir 
-toutes les formes conjuguées des verbes réguliers du français (1er et 2ème groupe).
+aux tags du StanfordPOSTagger, et aux tags du Lexique 3.83), obtenir toutes les formes conjuguées des verbes réguliers du français (1er et 2ème groupe).
 
 ## Sources et crédits 
 
@@ -132,26 +125,32 @@ fp = FrenchPreprocessing(java_path = 'C:\\Program Files\\Java\\jre1.8.0_211\\bin
 
 #### Méthodes de la classe FrenchPreprocessing :
 
-- fp.tokenize_and_simplify(string)
+- fp.tokenize(string)
 
 Prend une string en entrée et retourne une liste de string formée des tokens 
-de la string d'entrée, après l'application des simplifications : [token1, token2]
+de la string d'entrée en enlevant les symboles inutiles : [token1, token2]
 
 - fp.tag(list_of_string)
 
-(Cette méthode s'applique sur une string ayant subit le prétraitement 
-précédent fp.tokenize_and_simplify(string))
+(Cette méthode s'applique sur une string ayant subit le prétraitement fp.tokenize(string))
 
 Prend une liste de string en entrée et retourne une liste de tuples de string 
-du type : [(token1, tag1), (token2, tag2)]
+du type : [(token1, tag1), (token2, tag2)].
+
+- fp.delete_stop_words_and_punct(list_word_tag)
+
+(Cette méthode s'applique sur un objet ayant subit le prétraitement fp.tag(fp.tokenize(string)))
+
+Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], 
+transforme les majuscules en minuscules, enlève les stopwords et la ponctuation, et retourne un objet du même type. 
 
 - fp.lemmatize(list_word_tag)
 
-(Cette méthode s'applique sur une string ayant subi les prétraitements précédents
-fp.tag(fp.tokenize_and_simplify(string)))
+(Cette méthode s'applique sur un objet ayant subit le prétraitement fp.delete_stop_words_and_punct(fp.tag(fp.tokenize(string))))
 
 Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], 
 et retourne une string des lemmes des tokens de la liste : "lemma_token_1 lemma_token_2".
+
 
 - fp.preprocessing(string)
 
@@ -170,7 +169,7 @@ string_sortie = fp.preprocessing(string_entree)
 
 print(string_sortie)
 
-> vie beau je penser tu devoir aller observer loutre habitat naturel
+> vie belle je penser tu devoir aller observer loutre habitat naturel ... plus il 20 pourcent plus habitude côte
 
 ## lexique_tools.py : Détail des méthodes et exemples d'utilisation
 

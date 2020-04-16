@@ -2,23 +2,9 @@
 
 """
 Auteur : Anaïs HOAREAU
-Date : 07/2019
+Date : 04/2020
 GitHub : https://github.com/anaishoareau
-Linkedin : https://www.linkedin.com/in/ana%C3%AFs-hoareau-a2a042183/
 """
-
-# Fonction qui permet de supprimer les accents d'une string
-# Prend une string et renvoie la string équivalente sans accents
-def remove_accents(string):
-    import unicodedata
-    try:
-        string = unicode(string, 'utf-8')
-    except (TypeError, NameError):
-        pass
-    string = unicodedata.normalize('NFD', string)
-    string = string.encode('ascii', 'ignore')
-    string = string.decode("utf-8")
-    return str(string)
 
 #Les fonctions suivantes permettent d'uniformiser les tags utilisés 
 #par les autres outils.
