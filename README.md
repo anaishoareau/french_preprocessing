@@ -21,10 +21,8 @@ nltk : 3.4
 
 spaCy : 2.1.6
 
-(Elles ont normalement été installées avec la commande pip)
-
 #### Il est également nécessaire d'installer java (JRE) pour que le StanfordPOSTagger fonctionne. 
-Il faudra le path du java.exe pour instancier la classe FrenchPreprocessing, par exemple : java_path = "C:/Program Files/Java/jre1.8.0_211/bin/java.exe"
+Il faudra le path du java.exe pour instancier la classe FrenchPreprocessing, par exemple : java_path = "C:/Program Files/Java/jre1.8.0_211/bin/java.exe".
 
 ## Objectifs et réalisations du projet
 
@@ -133,13 +131,13 @@ fp.tokenize(string)
 ```
 
 Prend une string en entrée et retourne une liste de string formée des tokens 
-de la string d'entrée en enlevant les symboles inutiles : [token1, token2]
+de la string d'entrée en enlevant les symboles inutiles : [token1, token2].
 
 ```python 
 fp.tag(list_of_string)
 ```
 
-(Cette méthode s'applique sur une string ayant subit le prétraitement fp.tokenize(string))
+Cette méthode s'applique sur une string ayant subit le prétraitement fp.tokenize(string).
 
 Prend une liste de string en entrée et retourne une liste de tuples de string 
 du type : [(token1, tag1), (token2, tag2)].
@@ -148,7 +146,7 @@ du type : [(token1, tag1), (token2, tag2)].
 fp.delete_stop_words_and_punct(list_word_tag)
 ```
 
-(Cette méthode s'applique sur un objet ayant subit le prétraitement fp.tag(fp.tokenize(string)))
+Cette méthode s'applique sur un objet ayant subit le prétraitement fp.tag(fp.tokenize(string)).
 
 Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], 
 transforme les majuscules en minuscules, enlève les stopwords et la ponctuation, et retourne un objet du même type. 
@@ -156,7 +154,7 @@ transforme les majuscules en minuscules, enlève les stopwords et la ponctuation
 ```python 
 fp.lemmatize(list_word_tag)
 ```
-(Cette méthode s'applique sur un objet ayant subit le prétraitement fp.delete_stop_words_and_punct(fp.tag(fp.tokenize(string))))
+Cette méthode s'applique sur un objet ayant subit le prétraitement fp.delete_stop_words_and_punct(fp.tag(fp.tokenize(string))).
 
 Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], 
 et retourne une string des lemmes des tokens de la liste : "lemma_token_1 lemma_token_2".
@@ -206,7 +204,7 @@ renvoie la valeur associée à la string dans le dictionnaire.
 
 ```python 
 lt.in_lexique('mangé')
->>>{'v': 'manger', 'adj': 'mangé'}
+>>> {'v': 'manger', 'adj': 'mangé'}
 
 lt.in_lexique('cemotnexistepas')
 >>> False
@@ -296,20 +294,6 @@ renvoie la liste des formes conjuguées de ce verbe.
 ```python 
 conjug_1('réussir')
 >>> ['réussir', 'réussis', 'réussit', 'réussissons', 'réussissez', 'réussissent', 'réussissais', 'réussissait', 'réussissions', 'réussissiez', 'réussissaient', 'réussîmes', 'réussîtes', 'réussirent', 'réussirai', 'réussiras', 'réussira', 'réussirons', 'réussirez', 'réussiront', 'réussirais', 'réussirait', 'réussirions', 'réussiriez', 'réussiraient', 'réussisse', 'réussisses', 'réussissions', 'réussissiez', 'réussissent', 'réussi', 'réussissant']
-```
-
-## Autres fonctions présentes (utilisées dans les autres fichiers du package)
-
-- remove_accents(string)
-
-Prend en argument une string possiblement avec des accents,
-renvoie la même string sans accent.
-
-##### Exemple :
-
-```python 
-remove_accents('mangé')
->>> mange
 ```
 
 - stanford_tag_reduction(tag)
