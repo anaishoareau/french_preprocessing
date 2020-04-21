@@ -32,7 +32,7 @@ spaCy : 2.1.6
 - Grammatical tagging : Etiquetage grammatical (Part-of-speech tagging), autrement dit, l'association 
 de tags grammaticaux (ex: 'nc' pour nom commun, 'v' pour verbe...) aux tokens d'un texte
 
-- Simplification : Supression des stopwords (mots à faible valeur lexicale comme 'le', 
+- Simplification : Suppression des stopwords (mots à faible valeur lexicale comme 'le', 
 "t'", 'dring'...), retrait de la ponctuation
 
 - Lemmatisation : Remplacement des tokens d'un texte par leur lemme ("forme canonique" 
@@ -43,7 +43,7 @@ du mot, utilisée dans les dictionnaires)
 - Utilisation de spaCy pour la tokenisation.
 
 - Synthétisation de trois lexiques en un seul (lexique.txt): Lexique des formes fléchies du français (LEFFF), 
-le Lexique 3.83, et le lexique utilisé par la librarie python spaCy pour 
+le Lexique 3.83, et le lexique utilisé par la librairie python spaCy pour 
 créer une base de données développée pour l'outil de lemmatisation.
 
 - Uniformisation des tags utilisés dans les deux lexiques (LEFFF et Lexique 3.83) et tagging
@@ -105,7 +105,7 @@ on Empirical Methods in Natural Language Processing and Very Large Corpora (EMNL
 of HLT-NAACL 2003, pp. 252-259.
 
 
-### Licenses and Copyrights : 
+### Licences and Copyrights : 
 
 - License Lexique 3.83 : Attribution-ShareAlike 4.0 International, https://github.com/chrplr/openlexicon/blob/master/LICENSE.txt
 - License spaCy : The MIT License (MIT), https://github.com/explosion/spaCy/blob/master/LICENSE
@@ -114,9 +114,9 @@ of HLT-NAACL 2003, pp. 252-259.
 - FrenchLefffLemmatizer : Lesser General Public License For Linguistic Resources, https://github.com/ClaudeCoulombe/FrenchLefffLemmatizer/blob/master/LICENSE
 
 
-## french_preprocessing.py : Détail des méthodes et exemples d'utilisaiton
+## french_preprocessing.py : Détail des méthodes et exemples d'utilisation
 
-#### Intialisation de la classe FrenchPreprocessing :
+#### Initialisation de la classe FrenchPreprocessing :
 
 ```python
 from french_preprocessing.french_preprocessing import FrenchPreprocessing
@@ -136,7 +136,7 @@ de la string d'entrée en enlevant les symboles inutiles : [token1, token2].
 fp.tag(list_of_string)
 ```
 
-Cette méthode s'applique sur une string ayant subit le prétraitement fp.tokenize(string).
+Cette méthode s'applique sur une string ayant subi le prétraitement fp.tokenize(string).
 
 Prend une liste de string en entrée et retourne une liste de tuples de string 
 du type : [(token1, tag1), (token2, tag2)].
@@ -145,7 +145,7 @@ du type : [(token1, tag1), (token2, tag2)].
 fp.delete_stop_words_and_punct(list_word_tag)
 ```
 
-Cette méthode s'applique sur un objet ayant subit le prétraitement fp.tag(fp.tokenize(string)).
+Cette méthode s'applique sur un objet ayant subi le prétraitement fp.tag(fp.tokenize(string)).
 
 Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], 
 transforme les majuscules en minuscules, enlève les stopwords et la ponctuation, et retourne un objet du même type. 
@@ -153,7 +153,7 @@ transforme les majuscules en minuscules, enlève les stopwords et la ponctuation
 ```python 
 fp.lemmatize(list_word_tag)
 ```
-Cette méthode s'applique sur un objet ayant subit le prétraitement fp.delete_stop_words_and_punct(fp.tag(fp.tokenize(string))).
+Cette méthode s'applique sur un objet ayant subi le prétraitement fp.delete_stop_words_and_punct(fp.tag(fp.tokenize(string))).
 
 Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], 
 et retourne une string des lemmes des tokens de la liste : "lemma_token_1 lemma_token_2".
@@ -178,13 +178,13 @@ string_sortie = fp.preprocessing(string_entree)
 
 print(string_sortie)
 
->>> vie belle je penser tu devoir aller observer loutre habitat naturel ... plus il 20 pourcent plus habitude côte
+>>> vie belle je penser tu devoir aller observer loutre habitat naturel ... plus il 20 pourcents plus habitude côte
 
 ```
 
 ## lexique_tools.py : Détail des méthodes et exemples d'utilisation
 
-#### Intialisation de la classe LexiqueTools :
+#### Initialisation de la classe LexiqueTools :
 
 ```python 
 from french_preprocessing.lexique_tools import LexiqueTools
@@ -243,7 +243,7 @@ lt.in_lexique('mangé')
 - lt.lexique_update(dictionary)
 
 Prend en argument le dictionnaire des mots à ajouter au lexique, ne renvoie rien.
-Réalise une sucession d'ajouts des mots de "dictionnary" dans le lexique.
+Réalise une succession d'ajouts des mots de "dictionnary" dans le lexique.
 
 ##### Exemple :
 
