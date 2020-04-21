@@ -21,8 +21,7 @@ nltk : 3.4
 
 spaCy : 2.1.6
 
-#### Il est également nécessaire d'installer java (JRE) pour que le StanfordPOSTagger fonctionne. 
-Il faudra le path du java.exe pour instancier la classe FrenchPreprocessing, par exemple : java_path = "C:/Program Files/Java/jre1.8.0_211/bin/java.exe".
+#### ATTENTON : Pour que le french_preprocessing fonctionne, il faut avoir installé java (JRE) : https://www.java.com/fr/download/ et donner le path du fichier java.exe à l'initialisation du FrenchPreprocessing, un exemple est proposé après.
 
 ## Objectifs et réalisations du projet
 
@@ -193,7 +192,7 @@ from french_preprocessing.lexique_tools import LexiqueTools
 lt = LexiqueTools()
 ```
 
-#### Méthodes de la classe FrenchPreprocessing :
+#### Méthodes de la classe LexiqueTools :
 
 - lt.in_lexique(word)
 
@@ -211,8 +210,8 @@ lt.in_lexique('cemotnexistepas')
 ```
 - lt.lexique_rewrite()
 
-Ne prend rien en argument et ne renvoie rien, sert à réécrire les lexiques dans 
-les différents fichiers textes lorsque des modifications ont eu lieu.
+Ne prend rien en argument et ne renvoie rien, sert à réécrire le lexique 
+lorsque des modifications ont eu lieu.
 
 Doit être utilisée après les ajouts ou les suppressions de mots, 
 sinon les changements ne sont pas pris en compte.
@@ -263,7 +262,7 @@ lt.in_lexique('nouveaumot')
 >>> {'nc':'nouveaulemme', 'v':'nouveaulemme2'}
 ```
 
-##### ATTENTION : Après chaque série de manipulations, il est nécessaire de réécrire les lexiques à l'aide de la méthode : lexique_rewrite().
+##### ATTENTION : Après chaque série de manipulations, il est nécessaire de réécrire le lexique à l'aide de la méthode : lexique_rewrite().
 
 ## general_tools.py : Détail de deux fonctions utiles et exemples d'utilisation
 
