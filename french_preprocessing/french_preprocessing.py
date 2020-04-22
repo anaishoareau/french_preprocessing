@@ -3,8 +3,6 @@
 """
 Auteur : Anaïs HOAREAU
 Date : 04/2020
-GitHub : https://github.com/anaishoareau
-
 """
 
 # IMPORTS
@@ -13,23 +11,26 @@ import spacy
 import re
 from nltk.tag import StanfordPOSTagger
 
-from general_tools import stanford_tag_reduction
+from french_preprocessing.general_tools import stanford_tag_reduction
+
 
 
 class FrenchPreprocessing(object):  
 
     def __init__(self, java_path = "C:/Program Files/Java/jre1.8.0_211/bin/java.exe"):
 
-        # CHARGEMENT DES LEXIQUES
-        f=open('./data/lexique.txt','r')#, encoding = 'utf_8') #'cp850'
+        # Chargement du path du dossier du ficher actuel
+        dir_path = os.path.dirname(os.path.abspath(__file__))
 
+        # Chargement du lexique
+        f=open(dir_path + '/data/lexique.txt','r')
         self.lexique = dict(eval(f.read()))
         
         ## INITIALISATION DU TAGGER
         
         # Initialisation des path pour le StanfordPOSTagger
-        jar = './stanford-postagger-full-2018-10-16/stanford-postagger-3.9.2.jar'
-        model = './stanford-postagger-full-2018-10-16/models/french.tagger'
+        jar = dir_path + '/stanford-postagger-full-2018-10-16/stanford-postagger-3.9.2.jar'
+        model = dir_path + '/stanford-postagger-full-2018-10-16/models/french.tagger'
         self.java_path = java_path
         os.environ['JAVAHOME'] = self.java_path
         

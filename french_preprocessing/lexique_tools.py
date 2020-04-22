@@ -3,18 +3,24 @@
 """
 Auteur : Anaïs HOAREAU
 Date : 04/2020
-GitHub : https://github.com/anaishoareau
 """
-# MANQUE FONCTION DE SUPRESSION 
 
+# IMPORTS 
+
+import os
 
 # DEFINITIONS DE LA CLASSE PERMETTANT DE MODIFIER LE LEXIQUE
 class LexiqueTools(object):
     
     def __init__(self):
 
-        self.f = open('./data/lexique.txt','r')
-        self.lexique = dict(eval(self.f.read()))
+        # Chargement du path du dossier du ficher actuel
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        
+        # Chargement du lexique
+        f=open(dir_path + '/data/lexique.txt','r')
+
+        self.lexique = dict(eval(f.read()))
 
     # Méthode qui prend en argument une string 
     # qui renvoie False si le mot n'est pas dans le dictionnaire 
@@ -66,6 +72,3 @@ class LexiqueTools(object):
                 self.add_element(word, dictionary[word][tag],tag)
                 
         self.lexique_rewrite()
-                
-                
-        

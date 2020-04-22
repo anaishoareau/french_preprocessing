@@ -3,7 +3,6 @@
 """
 Auteur : Anaïs HOAREAU
 Date : 04/2020
-GitHub : https://github.com/anaishoareau
 """
 
 #Les fonctions suivantes permettent d'uniformiser les tags utilisés 
