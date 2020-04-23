@@ -67,7 +67,6 @@ class FrenchPreprocessing(object):
         for token in doc:
             if token.text not in symbols:
                 tokenized_list_of_string.append(token.text)
-        print(tokenized_list_of_string)
         return tokenized_list_of_string
     
     # La fonction tag :
@@ -78,7 +77,6 @@ class FrenchPreprocessing(object):
         list_word_tag = []
         for e in temp:
             list_word_tag.append((e[0].lower(),stanford_tag_reduction(e[1])))
-        print(list_word_tag)
         return list_word_tag
     
     def delete_stop_words_and_punct(self, list_word_tag):
@@ -90,7 +88,6 @@ class FrenchPreprocessing(object):
             e = list_word_tag[i][0].lower()
             if e not in stop and e not in punct :
                 reduced_list_word_tag.append((e,list_word_tag[i][1]))
-        print(reduced_list_word_tag)
         return reduced_list_word_tag
     
     # La fonction lemmatise :
