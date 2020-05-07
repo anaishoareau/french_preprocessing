@@ -2,22 +2,20 @@
 
 """
 Auteur : Anaïs HOAREAU
-Date : 04/2020
+Date : 05/2020
 """
 
 # IMPORTS
 import os
-import spacy
 import re
 from nltk.tag import StanfordPOSTagger
+from nltk import RegexpTokenizer
 
 from french_preprocessing.general_tools import stanford_tag_reduction
 
-
-
 class FrenchPreprocessing(object):  
 
-    def __init__(self, java_path = "C:/Program Files/Java/jre1.8.0_211/bin/java.exe"):
+    def __init__(self, java_path = "C:/Program Files (x86)/Java/jre1.8.0_241/bin/java.exe"):
 
         # Chargement du path du dossier du ficher actuel
         dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -37,36 +35,30 @@ class FrenchPreprocessing(object):
         # Initialisation du StanfordPOSTagger
         self.pos_tagger = StanfordPOSTagger(model, jar, encoding = 'utf8')
         
-        # CHARGEMENT DU MODULE SPACY POUR LE FRANCAIS
-        try:
-            self.nlp = spacy.load('fr_core_news_sm')
-        except:
-            # Si il y a besoin de préciser le proxy, il faut rajouter les lignes suivantes :
-            #proxy='nom de votre proxy'
-            #os.environ['http_proxy'] = proxy
-            #os.environ['HTTP_PROXY'] = proxy
-            #os.environ['https_proxy'] = proxy
-            #os.environ['HTTPS_PROXY'] = proxy
-            
-            os.system('python -m spacy download fr_core_news_sm')
-            self.nlp = spacy.load('fr_core_news_sm')
-
     # La fonction tokenize :
     # - prend en argument une phrase à tokeniser (string)
     # - renvoie une liste contenant les mots de la phrase tokenisée
     def tokenize(self, string):
-        #doc = self.nlp(string.lower())
         space = re.compile(r' +')
         string = re.sub(space, ' ', string)
+        # Regex simple pour le français
+        #toknizer = RegexpTokenizer(r'''\w'|\w+[/-]\w+|\w+|[^\w\s]''')
+        #toknizer = RegexpTokenizer(r'''\w'|\w+[/-]\w+|\w+|[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+''')
+        #(?:0[0-9]([ \.][0-9]{2}){4})
+        #(?:[0-9][0-9]+[ \.\-][0-9][0-9])+
+        toknizer = RegexpTokenizer(r'''(?x) (?:[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+) | (?:0[0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9]) | (?:[A-Za-z]+\.[A-Za-z]+)+ | (?:\w') | (?:\w+[/-]\w+) | \w+(?:-\w+)* | \$?\d+(?:\.\d+)?%? | \.\.\. | [][.,;"'!?():-_`]''') 
         
-        doc = self.nlp(string)
+        #toknizer = RegexpTokenizer(r'''(?x) (?:[A-Za-z0-9]+[\.\-/][A-Za-z0-9]+)+ | (?:[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+) | (?:\w') | (?:\w+[/-]\w+) | \w+(?:-\w+)* | \$?\d+(?:\.\d+)?%? | \.\.\. | [][.,;"'!?():-_`]''')
+        
+        tokens = toknizer.tokenize(string)
         
         tokenized_list_of_string = []
 
-        symbols = '''()[]{}'"\<>/@#^*_~''' 
-        for token in doc:
-            if token.text not in symbols:
-                tokenized_list_of_string.append(token.text)
+        symbols = '''()[]{}'"<>@#^*_~''' 
+
+        for token in tokens:
+            if token not in symbols:
+                tokenized_list_of_string.append(token)
         return tokenized_list_of_string
     
     # La fonction tag :

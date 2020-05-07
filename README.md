@@ -13,13 +13,10 @@ Vérifier que la commande pip est installée, ainsi que git : https://packaging.
 pip install git+https://github.com/anaishoareau/french_preprocessing.git
 ```
 
-#### ATTENTION : Cette commande installe aussi les dépendances (les packages python spaCy et nltk). Si vous rencontrez des problèmes, il faut les installer à part.
+#### ATTENTION : Cette commande installe aussi les dépendances (le package python nltk). Si vous rencontrez des problèmes, il faut l'installer à part.
 
-Les versions utilisées sont :
+Version utilisée : nltk - 3.4
 
-nltk : 3.4
-
-spaCy : 2.1.6
 
 #### ATTENTON : Pour que le french_preprocessing fonctionne, il faut avoir installé java (JRE) : https://www.java.com/fr/download/ et donner le path du fichier java.exe à l'initialisation du FrenchPreprocessing, un exemple est proposé après.
 
@@ -40,7 +37,7 @@ du mot, utilisée dans les dictionnaires)
 
 ### Précisions sur le travail effectué
 
-- Utilisation de spaCy pour la tokenisation.
+- Tokenisation utilisant NLTK et une expression régulière créée pour le français. 
 
 - Synthétisation de trois lexiques en un seul (lexique.txt): Lexique des formes fléchies du français (LEFFF), 
 le Lexique 3.83, et le lexique utilisé par la librairie python spaCy pour 
