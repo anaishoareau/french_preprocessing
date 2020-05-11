@@ -41,14 +41,9 @@ class FrenchPreprocessing(object):
     def tokenize(self, string):
         space = re.compile(r' +')
         string = re.sub(space, ' ', string)
-        # Regex simple pour le français
-        #toknizer = RegexpTokenizer(r'''\w'|\w+[/-]\w+|\w+|[^\w\s]''')
-        #toknizer = RegexpTokenizer(r'''\w'|\w+[/-]\w+|\w+|[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+''')
-        #(?:0[0-9]([ \.][0-9]{2}){4})
-        #(?:[0-9][0-9]+[ \.\-][0-9][0-9])+
-        toknizer = RegexpTokenizer(r'''(?x) (?:[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+) | (?:0[0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9]) | (?:[A-Za-z]+\.[A-Za-z]+)+ | (?:\w') | (?:\w+[/-]\w+) | \w+(?:-\w+)* | \$?\d+(?:\.\d+)?%? | \.\.\. | [][.,;"'!?():-_`]''') 
         
-        #toknizer = RegexpTokenizer(r'''(?x) (?:[A-Za-z0-9]+[\.\-/][A-Za-z0-9]+)+ | (?:[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+) | (?:\w') | (?:\w+[/-]\w+) | \w+(?:-\w+)* | \$?\d+(?:\.\d+)?%? | \.\.\. | [][.,;"'!?():-_`]''')
+        # Regex pour le français
+        toknizer = RegexpTokenizer(r'''(?x) (?:[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+) | (?:0[0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9]) | (?:[A-Za-z]+\.[A-Za-z]+)+ | (?:\w') | (?:\w+[/-]\w+) | \w+(?:-\w+)* | \$?\d+(?:\.\d+)?%? | \.\.\. | [][.,;"'!?():-_`]''') 
         
         tokens = toknizer.tokenize(string)
         
