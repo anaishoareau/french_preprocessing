@@ -82,8 +82,7 @@ class FrenchPreprocessing(object):
         return reduced_list_word_tag
     
     # Suppression de la ponctuation
-    def delete_punct(self, list_word_tag):
-        punct = """!;:,.?-"""
+    def delete_punct(self, list_word_tag, punct = """!;:,.?-"""):
         reduced_list_word_tag = []
         for i in range(len(list_word_tag)):
             e = list_word_tag[i]
