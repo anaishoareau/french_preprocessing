@@ -72,13 +72,23 @@ class FrenchPreprocessing(object):
             list_word_tag.append((e[0].lower(),stanford_tag_reduction(e[1])))
         return list_word_tag
     
-    def delete_stop_words_and_punct(self, list_word_tag):
-        punct = """!;:,.?-"""
+    # Suppression des stop_words
+    def delete_stop_words(self, list_word_tag):
         reduced_list_word_tag = []
         for i in range(len(list_word_tag)):
             e = list_word_tag[i][0].lower()
-            if e not in self.stop and e not in punct :
+            if e not in self.stop:
                 reduced_list_word_tag.append((e,list_word_tag[i][1]))
+        return reduced_list_word_tag
+    
+    # Suppression de la ponctuation
+    def delete_punct(self, list_word_tag):
+        punct = """!;:,.?-"""
+        reduced_list_word_tag = []
+        for i in range(len(list_word_tag)):
+            e = list_word_tag[i]
+            if e[0] not in punct :
+                reduced_list_word_tag.append((e[0],e[1]))
         return reduced_list_word_tag
     
     # La fonction lemmatise :
@@ -109,6 +119,7 @@ class FrenchPreprocessing(object):
     def preprocessing(self, string):
         tokenized_list_of_string = self.tokenize(string)
         list_word_tag = self.tag(tokenized_list_of_string)
-        reduced_list_word_tag = self.delete_stop_words_and_punct(list_word_tag)
-        lematized_string = self.lemmatize(reduced_list_word_tag)
+        reduced_list_word_tag = self.delete_stop_words(list_word_tag)
+        reduced_list_word_tag_2 = self.delete_punct(reduced_list_word_tag)
+        lematized_string = self.lemmatize(reduced_list_word_tag_2)
         return lematized_string
