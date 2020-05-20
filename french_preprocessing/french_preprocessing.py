@@ -18,7 +18,7 @@ stop = ["y","y'","m", "l", "d", "t", "qu", "s","c","m'",'hein', 'celle-là', 'ce
  
 class FrenchPreprocessing(object):  
 
-    def __init__(self, java_path = "C:/Program Files (x86)/Java/jre1.8.0_241/bin/java.exe", stop_words = stop):
+    def __init__(self, java_path = "C:/Program Files (x86)/Java/jre1.8.0_251/bin/java.exe", stop_words = stop):
 
         # Chargement du path du dossier du ficher actuel
         dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -47,9 +47,8 @@ class FrenchPreprocessing(object):
     def tokenize(self, string):
         space = re.compile(r' +')
         string = re.sub(space, ' ', string)
-        #| ((http|https)\:\/\/)?[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z]){2,6}([a-zA-Z0-9\.\&\/\?\:@\-_=#]) 
-        # Regex pour le français (?:[A-Za-z]+[\.][A-Za-z]+)+
-        toknizer = RegexpTokenizer(r'''(?x) (?:\w') | (?:[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+) | (?:http[s]*\://[a-zA-Z0-9/?=&\-\_\.]+[a-zA-Z0-9/?=&\-\_]) | (?:0[0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9]) | (?:[a-zA-Z0-9/?=&\-\_\.]+[a-zA-Z0-9/?=&\-\_]) | (?:\w+[/-]\w+) | \w+(?:-\w+)* | \$?\d+(?:\.\d+)?%? | \.\.\. | [][.,;"'!?():-_`]''') 
+        # Regex pour le français \w+(?:-\w+)*
+        toknizer = RegexpTokenizer(r'''(?x) (?:\w') | (?:[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9-]+\.[a-zA-ZÀ-Ÿà-ÿ0-9-\.]+) | (?:http[s]*\://[a-zA-ZÀ-Ÿà-ÿ0-9/?=&\-\_\.]+[a-zA-ZÀ-Ÿà-ÿ0-9/?=&\-\_]) | (?:0[0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9]) | (?:[a-zA-ZÀ-Ÿà-ÿ0-9/?=&\-\_\.]+[a-zA-ZÀ-Ÿà-ÿ0-9/?=&\-\_]) | (?:[\wÀ-Ÿà-ÿ]+[/-][\wÀ-Ÿà-ÿ]+) | (?:[\wÀ-Ÿà-ÿ]+) | \$?\d+(?:\.\d+)?%? | \.\.\. | [][.,;"'!?():-_`]''') 
 
         tokens = toknizer.tokenize(string)
 
@@ -122,4 +121,3 @@ class FrenchPreprocessing(object):
         reduced_list_word_tag_2 = self.delete_punct(reduced_list_word_tag)
         lematized_string = self.lemmatize(reduced_list_word_tag_2)
         return lematized_string
-
