@@ -47,12 +47,12 @@ class FrenchPreprocessing(object):
     def tokenize(self, string):
         space = re.compile(r' +')
         string = re.sub(space, ' ', string)
-        
-        # Regex pour le français
-        toknizer = RegexpTokenizer(r'''(?x) (?:[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+) | (?:0[0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9]) | (?:[A-Za-z]+\.[A-Za-z]+)+ | (?:\w') | (?:\w+[/-]\w+) | \w+(?:-\w+)* | \$?\d+(?:\.\d+)?%? | \.\.\. | [][.,;"'!?():-_`]''') 
+        #| ((http|https)\:\/\/)?[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z]){2,6}([a-zA-Z0-9\.\&\/\?\:@\-_=#]) 
+        # Regex pour le français (?:[A-Za-z]+[\.][A-Za-z]+)+
+        toknizer = RegexpTokenizer(r'''(?x) (?:\w') | (?:[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+) | (?:http[s]*\://[a-zA-Z0-9/?=&\-\_\.]+[a-zA-Z0-9/?=&\-\_]) | (?:0[0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9]) | (?:[a-zA-Z0-9/?=&\-\_\.]+[a-zA-Z0-9/?=&\-\_]) | (?:\w+[/-]\w+) | \w+(?:-\w+)* | \$?\d+(?:\.\d+)?%? | \.\.\. | [][.,;"'!?():-_`]''') 
         
         tokens = toknizer.tokenize(string)
-        
+        print(tokens)
         tokenized_list_of_string = []
 
         symbols = '''()[]{}'"<>@#^*_~''' 
@@ -122,3 +122,4 @@ class FrenchPreprocessing(object):
         reduced_list_word_tag_2 = self.delete_punct(reduced_list_word_tag)
         lematized_string = self.lemmatize(reduced_list_word_tag_2)
         return lematized_string
+
