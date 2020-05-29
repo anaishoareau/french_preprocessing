@@ -45,18 +45,38 @@ class FrenchPreprocessing(object):
     # - prend en argument une phrase à tokeniser (string)
     # - renvoie une liste contenant les mots de la phrase tokenisée
     def tokenize(self, string):
+        # Supression des espaces non nécessaires
         space = re.compile(r' +')
         string = re.sub(space, ' ', string)
-        # Regex pour le français \w+(?:-\w+)*
-        toknizer = RegexpTokenizer(r'''(?x) (?:\w') | (?:[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9-]+\.[a-zA-ZÀ-Ÿà-ÿ0-9-\.]+) | (?:http[s]*\://[a-zA-ZÀ-Ÿà-ÿ0-9/?=&\-\_\.]+[a-zA-ZÀ-Ÿà-ÿ0-9/?=&\-\_]) | (?:0[0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9][ /\.\-][0-9][0-9]) | (?:[a-zA-ZÀ-Ÿà-ÿ0-9/?=&\-\_\.]+[a-zA-ZÀ-Ÿà-ÿ0-9/?=&\-\_]) | (?:[\wÀ-Ÿà-ÿ]+[/-][\wÀ-Ÿà-ÿ]+) | (?:[\wÀ-Ÿà-ÿ]+) | \$?\d+(?:\.\d+)?%? | \.\.\. | [][.,;"'!?():-_`]''') 
+        
+        # Harmonisation des numéros de téléphone
+        tel = re.compile(r'(?P<sep1>0[0-9])( |/+|\-|\\+)(?P<sep2>[0-9]{2})( |/+|\.|\-|\\+)(?P<sep3>[0-9]{2})( |/+|\.|\-|\\+)(?P<sep4>[0-9]{2})( |/+|\.|\-|\\+)(?P<sep5>[0-9]{2})')
+        string = tel.sub(r'\g<sep1>.\g<sep2>.\g<sep3>.\g<sep4>.\g<sep5>',string)
 
-        tokens = toknizer.tokenize(string)
+        #Suppression des parenthèses
+        brackets = re.compile(r'[\(\)\{\}\[\]]+')
+        string = re.sub(brackets, '', string)
+        
+        # Tokenisation 
+        # Le tokenizer supprime automatiquement les caractères suivant : " ' `^ ° ¤ ¨
+        # Reconnait comme token :
+        # - Email
+        # - Site web, nom de domaine, utilisateur etc
+        # - Numéro de téléphone réduit
+        # - Nom composé
+        # - Mot courant
+        # - Ponctuation
+        tokenizer = RegexpTokenizer(r'''(\w'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:#@%/;$~_?\+\-=\\\.&\|£€]*[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\.,;\:\?!\-\_\*\#\§=+])''')
+                                                                                                                                                                                                                                                                                                                                                                                                            
+        tokens = tokenizer.tokenize(string)
 
+        # Suppression des symboles seuls
         tokenized_list_of_string = []
 
-        symbols = '''()[]{}'"<>@#^*_~''' 
+        symbols = '''#§_-@+=*<>'''
 
         for token in tokens:
+            
             if token not in symbols:
                 tokenized_list_of_string.append(token)
         return tokenized_list_of_string
@@ -67,8 +87,13 @@ class FrenchPreprocessing(object):
     def tag(self, list_of_string):
         temp = self.pos_tagger.tag(list_of_string)
         list_word_tag = []
-        for e in temp:
-            list_word_tag.append((e[0].lower(),stanford_tag_reduction(e[1])))
+        # Précédente version de la fonction tag :
+        # for e in temp:
+        #     list_word_tag.append((e[0].lower(),stanford_tag_reduction(e[1])))
+        # Elle supprimait les "_" présents dans les mots. Exemple : user_name -> username.
+        # La nouvelle version conserve les "_".
+        for i in range(len(temp)):
+            list_word_tag.append((list_of_string[i].lower(),stanford_tag_reduction(temp[i][1])))
         return list_word_tag
     
     # Suppression des stop_words
@@ -77,16 +102,16 @@ class FrenchPreprocessing(object):
         for i in range(len(list_word_tag)):
             e = list_word_tag[i][0].lower()
             if e not in self.stop:
-                reduced_list_word_tag.append((e,list_word_tag[i][1]))
+                reduced_list_word_tag.append((e, list_word_tag[i][1]))
         return reduced_list_word_tag
     
     # Suppression de la ponctuation
-    def delete_punct(self, list_word_tag, punct = """!;:,.?-"""):
+    def delete_punct(self, list_word_tag, punct = """!;:,.?-..."""):
         reduced_list_word_tag = []
         for i in range(len(list_word_tag)):
             e = list_word_tag[i]
             if e[0] not in punct :
-                reduced_list_word_tag.append((e[0],e[1]))
+                reduced_list_word_tag.append((e[0], e[1]))
         return reduced_list_word_tag
     
     # La fonction lemmatise :
