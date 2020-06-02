@@ -37,7 +37,7 @@ du mot, utilisée dans les dictionnaires)
 
 ### Précisions sur le travail effectué
 
-- Tokenisation utilisant NLTK et une expression régulière créée pour le français. 
+- Tokenisation réalisée par le RegexpTokenizer de NLTK avec une expression régulière créée spécifiquement pour le français et qui permet de reconnaître, en plus des unités lexicales courantes, beaucoup d'adresses emails, de numéros de téléphone, de noms de domaines, etc. 
 
 - Synthétisation de trois lexiques en un seul (lexique.txt): Lexique des formes fléchies du français (LEFFF), 
 le Lexique 3.83, et le lexique utilisé par la librairie python spaCy pour 
@@ -118,7 +118,7 @@ of HLT-NAACL 2003, pp. 252-259.
 ```python
 from french_preprocessing.french_preprocessing import FrenchPreprocessing
 
-fp = FrenchPreprocessing(java_path = 'C:\\Program Files\\Java\\jre1.8.0_211\\bin\\java.exe')
+fp = FrenchPreprocessing(java_path = 'C:/Program Files/Java/jre1.8.0_211/bin/java.exe', stop_words = personalized_list)
 ```
 #### Méthodes de la classe FrenchPreprocessing :
 
@@ -128,6 +128,18 @@ fp.tokenize(string)
 
 Prend une string en entrée et retourne une liste de string formée des tokens 
 de la string d'entrée en enlevant les symboles inutiles : [token1, token2].
+
+Exemple:
+
+```python 
+f.tokenize("""
+J'ai plein d'adresses à tester comme http://test.com/eelg/.
+En voici quelques unes : https://www.example.com/, www.example.com/etcetc, example.com/etcetc, mais j'ai aussi des adresses emails : zeofjreoigjerigjer@gmail.com et krjr@offo.edu.au.
+Voici d'autres tests ; user:pass@example.com/etcetc (www.exemple.com) et example.com/etcetc?query=aasd.
+Mon numéro de téléphone est le 06 02 02 02 02 mais on peut aussi me joindre au 07/02/02/02/02 !""")
+
+>>> ["J'", 'ai', 'plein', "d'", 'adresses', 'à', 'tester', 'comme', 'http://test.com/eelg/', '.', 'En', 'voici', 'quelques', 'unes', ':', 'https://www.example.com/', ',', 'www.example.com/etcetc', ',', 'example.com/etcetc', ',', 'mais', "j'", 'ai', 'aussi', 'des', 'adresses', 'emails', ':', 'zeofjreoigjerigjer@gmail.com', 'et', 'krjr@offo.edu.au', '.', 'Voici', "d'", 'autres', 'tests', ';', 'user:pass@example.com/etcetc', 'www.exemple.com', 'et', 'example.com/etcetc?query=aasd', '.', 'Mon', 'numéro', 'de', 'téléphone', 'est', 'le', '06.02.02.02.02', 'mais', 'on', 'peut', 'aussi', 'me', 'joindre', 'au', '07.02.02.02.02', '!']
+```
 
 ```python 
 fp.tag(list_of_string)
