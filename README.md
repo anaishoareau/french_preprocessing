@@ -122,73 +122,107 @@ fp = FrenchPreprocessing(java_path = 'C:/Program Files/Java/jre1.8.0_211/bin/jav
 ```
 #### Méthodes de la classe FrenchPreprocessing :
 
-```python 
-fp.tokenize(string)
-```
+##### - fp.tokenize(string)
 
 Prend une string en entrée et retourne une liste de string formée des tokens 
 de la string d'entrée en enlevant les symboles inutiles : [token1, token2].
 
-Exemple:
+Exemples :
 
 ```python 
-f.tokenize("""
-J'ai plein d'adresses à tester comme http://test.com/eelg/.
+# Définitions des chaines de caractères
+
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
+
+complex_string = """Aujourd'hui j'ai plein d'adresses à tester comme http://test.com/eelg/.
 En voici quelques unes : https://www.example.com/, www.example.com/etcetc, example.com/etcetc, mais j'ai aussi des adresses emails : zeofjreoigjerigjer@gmail.com et krjr@offo.edu.au.
 Voici d'autres tests ; user:pass@example.com/etcetc (www.exemple.com) et example.com/etcetc?query=aasd.
-Mon numéro de téléphone est le 06 02 02 02 02 mais on peut aussi me joindre au 07/02/02/02/02 !""")
+Mon numéro de téléphone est le 06 02 02 02 02 mais on peut aussi me joindre au 07/02/02/02/02 !"""
 
->>> ["J'", 'ai', 'plein', "d'", 'adresses', 'à', 'tester', 'comme', 'http://test.com/eelg/', '.', 'En', 'voici', 'quelques', 'unes', ':', 'https://www.example.com/', ',', 'www.example.com/etcetc', ',', 'example.com/etcetc', ',', 'mais', "j'", 'ai', 'aussi', 'des', 'adresses', 'emails', ':', 'zeofjreoigjerigjer@gmail.com', 'et', 'krjr@offo.edu.au', '.', 'Voici', "d'", 'autres', 'tests', ';', 'user:pass@example.com/etcetc', 'www.exemple.com', 'et', 'example.com/etcetc?query=aasd', '.', 'Mon', 'numéro', 'de', 'téléphone', 'est', 'le', '06.02.02.02.02', 'mais', 'on', 'peut', 'aussi', 'me', 'joindre', 'au', '07.02.02.02.02', '!']
+# Applications de la méthode tokenize
+
+fp.tokenize(string)
+
+>>> ["J'", 'aime', 'les', 'chats', '.', 'Ce', 'sont', 'vraiment', 'des', 'êtres', 'supérieurs', 'et', 'ils', 'sont', 'même', 'doués', "d'", 'une', 'intelligence', 'hors', 'du', 'commun', '!']
+
+fp.tokenize(complex_string)
+
+>>> ["Aujourd'hui", "j'", 'ai', 'plein', "d'", 'adresses', 'à', 'tester', 'comme', 'http://test.com/eelg/', '.', 'En', 'voici', 'quelques', 'unes', ':', 'https://www.example.com/', ',', 'www.example.com/etcetc', ',', 'example.com/etcetc', ',', 'mais', "j'", 'ai', 'aussi', 'des', 'adresses', 'emails', ':', 'zeofjreoigjerigjer@gmail.com', 'et', 'krjr@offo.edu.au', '.', 'Voici', "d'", 'autres', 'tests', ';', 'user:pass@example.com/etcetc', 'www.exemple.com', 'et', 'example.com/etcetc?query=aasd', '.', 'Mon', 'numéro', 'de', 'téléphone', 'est', 'le', '06.02.02.02.02', 'mais', 'on', 'peut', 'aussi', 'me', 'joindre', 'au', '07.02.02.02.02', '!']
 ```
 
-```python 
-fp.tag(list_of_string)
-```
-
-Cette méthode s'applique sur une string ayant subi le prétraitement fp.tokenize(string).
+##### - fp.tag(list_of_string)
 
 Prend une liste de string en entrée et retourne une liste de tuples de string 
 du type : [(token1, tag1), (token2, tag2)].
 
-```python 
-fp.delete_stop_words_and_punct(list_word_tag)
+Exemple :
+
+```python
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
+
+fp.tag(fp.tokenize(string))
+
+>>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('.', 'ponct'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('et', 'c'), ('ils', 'cl'), ('sont', 'v'), ('même', 'adv'), ('doués', 'v'), ("d'", 'prep'), ('une', 'det'), ('intelligence', 'nc'), ('hors', 'prep'), ('du', 'prep'), ('commun', 'adj'), ('!', 'ponct')]
 ```
 
-Cette méthode s'applique sur un objet ayant subi le prétraitement fp.tag(fp.tokenize(string)).
+##### - fp.delete_stop_words(list_word_tag)
 
-Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], 
-transforme les majuscules en minuscules, enlève les stopwords et la ponctuation, et retourne un objet du même type. 
+Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], supprime les stopwords proposés par défaut ou bien supprime ceux proposés à la défintion de FrenchPreprocessing, et retourne un objet du même type. 
 
-```python 
-fp.lemmatize(list_word_tag)
+Exemple :
+
+```python
+# Dans cette exemple, les stopwords supprimés sont ceux qui font partie de la liste par défaut.
+
+string = "J'aime les chats ! Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
+
+fp.delete_stop_words(fp.tag(fp.tokenize(string)))
+
+>>> [("j'", 'cl'), ('aime', 'v'), ('chats', 'nc'), ('.', 'ponct'), ('vraiment', 'adv'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('ils', 'cl'), ('doués', 'v'), ('intelligence', 'nc'), ('commun', 'adj'), ('!', 'ponct')]
 ```
-Cette méthode s'applique sur un objet ayant subi le prétraitement fp.delete_stop_words_and_punct(fp.tag(fp.tokenize(string))).
+
+##### - fp.delete_punct(list_word_tag)
+
+Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], supprime la ponctuation, et retourne un objet du même type. 
+
+Exemple :
+
+```python
+string = "J'aime les chats ! Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
+
+fp.delete_punct(fp.delete_stop_words(fp.tag(fp.tokenize(string))))
+
+>>> [("j'", 'cl'), ('aime', 'v'), ('chats', 'nc'), ('vraiment', 'adv'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('ils', 'cl'), ('doués', 'v'), ('intelligence', 'nc'), ('commun', 'adj')]
+```
+
+##### - fp.lemmatize(list_word_tag)
 
 Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], 
 et retourne une string des lemmes des tokens de la liste : "lemma_token_1 lemma_token_2".
 
-```python 
-fp.preprocessing(string)
+Exemple :
+
+```python
+string = "J'aime les chats ! Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
+
+fp.lemmatize(fp.delete_punct(fp.delete_stop_words(fp.tag(fp.tokenize(string)))))
+
+>>> je aimer chat vraiment être supérieur il douer intelligence commun
 ```
+
+##### - fp.preprocessing(string)
+
 Prend une string en entrée et lui applique tous les traitements précédents. 
 Cette méthode retourne donc la string ayant subi un pré-processing complet. 
 
-##### Exemple :
+Exemple :
 
 ```python
+string = "J'aime les chats ! Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
 
-from french_preprocessing.french_preprocessing import FrenchPreprocessing
+fp.preprocessing(string)
 
-fp = FrenchPreprocessing(java_path = 'C:\\Program Files\\Java\\jre1.8.0_211\\bin\\java.exe')
-
-string_entree = "La vie est si belle aujourd'hui ! Je pense que tu devrais aller observer les loutres dans leurs habitats naturels... En plus, il y en a 20% de plus que d'habitude sur la côte."
-
-string_sortie = fp.preprocessing(string_entree)
-
-print(string_sortie)
-
->>> vie belle je penser tu devoir aller observer loutre habitat naturel ... plus il 20 pourcents plus habitude côte
-
+>>> je aimer chat vraiment être supérieur il douer intelligence commun
 ```
 
 ## lexique_tools.py : Détail des méthodes et exemples d'utilisation
