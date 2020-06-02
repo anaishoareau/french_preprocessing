@@ -132,7 +132,7 @@ Exemples :
 ```python 
 # Définitions des chaines de caractères
 
-string = "J'aime les chats. Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
 
 complex_string = """Aujourd'hui j'ai plein d'adresses à tester comme http://test.com/eelg/.
 En voici quelques unes : https://www.example.com/, www.example.com/etcetc, example.com/etcetc, mais j'ai aussi des adresses emails : zeofjreoigjerigjer@gmail.com et krjr@offo.edu.au.
@@ -143,7 +143,7 @@ Mon numéro de téléphone est le 06 02 02 02 02 mais on peut aussi me joindre a
 
 fp.tokenize(string)
 
->>> ["J'", 'aime', 'les', 'chats', '.', 'Ce', 'sont', 'vraiment', 'des', 'êtres', 'supérieurs', 'et', 'ils', 'sont', 'même', 'doués', "d'", 'une', 'intelligence', 'hors', 'du', 'commun', '!']
+>>> ["J'", 'aime', 'les', 'chats', '.', 'Ce', 'sont', 'vraiment', 'des', 'êtres', 'supérieurs', '!', 'Un', 'jour', ',', "j'", 'en', 'suis', 'certaine', ',', 'ils', 'contrôleront', 'le', 'monde', '...']
 
 fp.tokenize(complex_string)
 
@@ -158,11 +158,11 @@ du type : [(token1, tag1), (token2, tag2)].
 Exemple :
 
 ```python
-string = "J'aime les chats. Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
 
 fp.tag(fp.tokenize(string))
 
->>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('.', 'ponct'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('et', 'c'), ('ils', 'cl'), ('sont', 'v'), ('même', 'adv'), ('doués', 'v'), ("d'", 'prep'), ('une', 'det'), ('intelligence', 'nc'), ('hors', 'prep'), ('du', 'prep'), ('commun', 'adj'), ('!', 'ponct')]
+>>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('.', 'ponct'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('!', 'ponct'), ('un', 'det'), ('jour', 'nc'), (',', 'ponct'), ("j'", 'cl'), ('en', 'cl'), ('suis', 'v'), ('certaine', 'adj'), (',', 'ponct'), ('ils', 'cl'), ('contrôleront', 'v'), ('le', 'det'), ('monde', 'nc'), ('...', 'ponct')]
 ```
 
 ##### - fp.delete_stop_words(list_word_tag)
@@ -174,11 +174,11 @@ Exemple :
 ```python
 # Dans cette exemple, les stopwords supprimés sont ceux qui font partie de la liste par défaut.
 
-string = "J'aime les chats ! Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
 
 fp.delete_stop_words(fp.tag(fp.tokenize(string)))
 
->>> [("j'", 'cl'), ('aime', 'v'), ('chats', 'nc'), ('.', 'ponct'), ('vraiment', 'adv'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('ils', 'cl'), ('doués', 'v'), ('intelligence', 'nc'), ('commun', 'adj'), ('!', 'ponct')]
+>>> [("j'", 'cl'), ('aime', 'v'), ('chats', 'nc'), ('.', 'ponct'), ('vraiment', 'adv'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('!', 'ponct'), ('jour', 'nc'), (',', 'ponct'), ("j'", 'cl'), ('certaine', 'adj'), (',', 'ponct'), ('ils', 'cl'), ('contrôleront', 'v'), ('monde', 'nc'), ('...', 'ponct')]
 ```
 
 ##### - fp.delete_punct(list_word_tag)
@@ -188,11 +188,11 @@ Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token
 Exemple :
 
 ```python
-string = "J'aime les chats ! Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
 
 fp.delete_punct(fp.delete_stop_words(fp.tag(fp.tokenize(string))))
 
->>> [("j'", 'cl'), ('aime', 'v'), ('chats', 'nc'), ('vraiment', 'adv'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('ils', 'cl'), ('doués', 'v'), ('intelligence', 'nc'), ('commun', 'adj')]
+>>> [("j'", 'cl'), ('aime', 'v'), ('chats', 'nc'), ('vraiment', 'adv'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('jour', 'nc'), ("j'", 'cl'), ('certaine', 'adj'), ('ils', 'cl'), ('contrôleront', 'v'), ('monde', 'nc')]
 ```
 
 ##### - fp.lemmatize(list_word_tag)
@@ -203,11 +203,11 @@ et retourne une string des lemmes des tokens de la liste : "lemma_token_1 lemma_
 Exemple :
 
 ```python
-string = "J'aime les chats ! Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
 
 fp.lemmatize(fp.delete_punct(fp.delete_stop_words(fp.tag(fp.tokenize(string)))))
 
->>> je aimer chat vraiment être supérieur il douer intelligence commun
+>>> je aimer chat vraiment être supérieur jour je certain il contrôler monde
 ```
 
 ##### - fp.preprocessing(string)
@@ -218,11 +218,11 @@ Cette méthode retourne donc la string ayant subi un pré-processing complet.
 Exemple :
 
 ```python
-string = "J'aime les chats ! Ce sont vraiment des êtres supérieurs (et ils sont même doués d'une intelligence hors du commun) !"
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
 
 fp.preprocessing(string)
 
->>> je aimer chat vraiment être supérieur il douer intelligence commun
+>>> je aimer chat vraiment être supérieur jour je certain il contrôler monde
 ```
 
 ## lexique_tools.py : Détail des méthodes et exemples d'utilisation
@@ -237,12 +237,12 @@ lt = LexiqueTools()
 
 #### Méthodes de la classe LexiqueTools :
 
-- lt.in_lexique(word)
+##### - lt.in_lexique(word)
 
 Prend une string en entrée, renvoie False si le mot n'est pas dans le dictionnaire, sinon
 renvoie la valeur associée à la string dans le dictionnaire.
 
-##### Exemple :
+Exemple :
 
 ```python 
 lt.in_lexique('mangé')
@@ -251,7 +251,8 @@ lt.in_lexique('mangé')
 lt.in_lexique('cemotnexistepas')
 >>> False
 ```
-- lt.lexique_rewrite()
+
+##### - lt.lexique_rewrite()
 
 Ne prend rien en argument et ne renvoie rien, sert à réécrire le lexique 
 lorsque des modifications ont eu lieu.
@@ -259,19 +260,19 @@ lorsque des modifications ont eu lieu.
 Doit être utilisée après les ajouts ou les suppressions de mots, 
 sinon les changements ne sont pas pris en compte.
 
-- lt.add_element(word, lemma, tag)
+##### - lt.add_element(word, lemma, tag)
 
 Prend en argument une string, son lemme associé, son tag et ne renvoie rien. 
 Cette méthode ajoute le nouvel élément (word, lemma, tag) au dictionnaire, ou 
 ne fait rien s'il y est déjà.
 
-- lt.remove_element(word, tag)
+##### - lt.remove_element(word, tag)
 
 Prend en argument le mot à supprimer et son tag, ne revoie rien.
 Supprime tag associé au mot désiré ou ne fais rien si le tag n'existe 
 pas dans le dictionnaire associé au mot.
 
-##### Exemple : 
+Exemple : 
 
 ```python 
 lt.in_lexique('mangé')
@@ -283,12 +284,12 @@ lt.in_lexique('mangé')
 >>> {'adj': 'mangé'}
 ```
 
-- lt.lexique_update(dictionary)
+##### - lt.lexique_update(dictionary)
 
 Prend en argument le dictionnaire des mots à ajouter au lexique, ne renvoie rien.
 Réalise une succession d'ajouts des mots de "dictionnary" dans le lexique.
 
-##### Exemple :
+Exemple :
 
 ```python 
 lt.in_lexique('mangé')
@@ -315,30 +316,30 @@ from french_preprocessing.general_tools import conjug_1, conjug_2
 
 #### Fonctions de general_tools.py :
 
-- conjug_1(first_group_verb)
+##### - conjug_1(first_group_verb)
 
 Prend en argument un verbe du 1er groupe dans sa forme canonique, 
 renvoie la liste des formes conjuguées de ce verbe.
 
-##### Exemple :
+Exemple :
 
 ```python 
 conjug_1('manger')
 >>> ['manger', 'mange', 'manges', 'mangons', 'mangez', 'mangent', 'mangé', 'mangais', 'mangait', 'mangions', 'mangiez', 'mangaient', 'mangai', 'mangas', 'manga', 'mangâmes', 'mangâtes', 'mangèrent', 'mangerai', 'mangeras', 'mangera', 'mangerons', 'mangerez', 'mangeront', 'mangerais', 'mangerait', 'mangerions', 'mangeriez', 'mangeraient', 'mangasse', 'mangasses', 'mangât', 'mangassions', 'mangassiez', 'mangassent', 'mangant']
 ```
-- conjug_2(second_group_verb)
+##### - conjug_2(second_group_verb)
 
 Prend en argument un verbe du 2eme groupe dans sa forme canonique, 
 renvoie la liste des formes conjuguées de ce verbe.
 
-##### Exemple :
+Exemple :
 
 ```python 
 conjug_1('réussir')
 >>> ['réussir', 'réussis', 'réussit', 'réussissons', 'réussissez', 'réussissent', 'réussissais', 'réussissait', 'réussissions', 'réussissiez', 'réussissaient', 'réussîmes', 'réussîtes', 'réussirent', 'réussirai', 'réussiras', 'réussira', 'réussirons', 'réussirez', 'réussiront', 'réussirais', 'réussirait', 'réussirions', 'réussiriez', 'réussiraient', 'réussisse', 'réussisses', 'réussissions', 'réussissiez', 'réussissent', 'réussi', 'réussissant']
 ```
 
-- stanford_tag_reduction(tag)
+##### - stanford_tag_reduction(tag)
 
 Prend en argument un tag et renvoie son tag réduit. 
 
@@ -348,7 +349,7 @@ Tag d'entrée : 'A', 'ADJ', 'ADJWH', 'ADV', 'ADVWH', 'C', 'CC', 'CL', 'CLO', 'CL
 
 Tag de sortie : 'v', 'nc', 'adj', 'c', 'npp', 'adv', 'det', 'pro', 'prep', 'i', 'ponct', 'cl', 'et'
 
-- lexique383_tag_reduction(tag)
+##### - lexique383_tag_reduction(tag)
 
 Prend en argument un tag et renvoie son tag réduit. 
 
