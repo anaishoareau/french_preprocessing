@@ -18,7 +18,7 @@ stop = ["y","y'","m", "l", "d", "t", "qu", "s","c","m'",'hein', 'celle-là', 'ce
  
 class FrenchPreprocessing(object):  
 
-    def __init__(self, java_path = "C:/Program Files (x86)/Java/jre1.8.0_251/bin/java.exe", stop_words = stop):
+    def __init__(self, java_path = "C:/Program Files (x86)/Java/jre1.8.0_251/bin/java.exe", stopwords = stop):
 
         # Chargement du path du dossier du ficher actuel
         dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -28,7 +28,7 @@ class FrenchPreprocessing(object):
         self.lexique = dict(eval(f.read()))
         
         # Défnition des stopwords
-        self.stop = stop_words
+        self.stop = stopwords
         
         ## INITIALISATION DU TAGGER
         
