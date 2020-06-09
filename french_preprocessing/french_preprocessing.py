@@ -54,8 +54,8 @@ class FrenchPreprocessing(object):
         string = tel.sub(r'\g<sep1>.\g<sep2>.\g<sep3>.\g<sep4>.\g<sep5>',string)
 
         #Suppression des parenthèses
-        brackets = re.compile(r'[\(\)\{\}\[\]]+')
-        string = re.sub(brackets, '', string)
+        #brackets = re.compile(r'[\(\)\{\}\[\]]+')
+        #string = re.sub(brackets, '', string)
         
         # Tokenisation 
         # Le tokenizer supprime automatiquement les caractères suivant : " ' `^ ° ¤ ¨
