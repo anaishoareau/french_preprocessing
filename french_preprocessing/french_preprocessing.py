@@ -52,13 +52,9 @@ class FrenchPreprocessing(object):
         # Harmonisation des numéros de téléphone
         tel = re.compile(r'(?P<sep1>0[0-9])( |/+|\-|\\+)(?P<sep2>[0-9]{2})( |/+|\.|\-|\\+)(?P<sep3>[0-9]{2})( |/+|\.|\-|\\+)(?P<sep4>[0-9]{2})( |/+|\.|\-|\\+)(?P<sep5>[0-9]{2})')
         string = tel.sub(r'\g<sep1>.\g<sep2>.\g<sep3>.\g<sep4>.\g<sep5>',string)
-
-        #Suppression des parenthèses
-        #brackets = re.compile(r'[\(\)\{\}\[\]]+')
-        #string = re.sub(brackets, '', string)
         
         # Tokenisation 
-        # Le tokenizer supprime automatiquement les caractères suivant : " ' `^ ° ¤ ¨
+        # Le tokenizer supprime automatiquement les caractères suivant : `^ ° ¤ ¨
         # Reconnait comme token :
         # - Email
         # - Site web, nom de domaine, utilisateur etc
@@ -66,20 +62,9 @@ class FrenchPreprocessing(object):
         # - Nom composé
         # - Mot courant
         # - Ponctuation
-        tokenizer = RegexpTokenizer(r'''(\w{2,}'\w+|\w'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-\.]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:#@%/;$~_?\+\-=\\\.&\|£€]*[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\.,;\:\?!\-\_\*\#\§=+])''')
-                                                                                                                                                                                                                                                                                                                                                                                                            
+        tokenizer = RegexpTokenizer(r'''(\w{2,}'\w+|\w'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-\.]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:@%/;$~_?\+\-=\\\.&\|£€]+[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\(\)\[\]\{\}\"\'\.,;\:\?!\-\_\*\#\§=+<>/\\])''')
         tokens = tokenizer.tokenize(string)
-
-        # Suppression des symboles seuls
-        tokenized_list_of_string = []
-
-        symbols = '''#§_-@+=*<>'''
-
-        for token in tokens:
-            
-            if token not in symbols:
-                tokenized_list_of_string.append(token)
-        return tokenized_list_of_string
+        return tokens
     
     # La fonction tag :
     # - prend une liste de strings formant une phrase (principe du StanfordPOSTagger)
@@ -96,12 +81,21 @@ class FrenchPreprocessing(object):
             list_word_tag.append((list_of_string[i].lower(),stanford_tag_reduction(temp[i][1])))
         return list_word_tag
     
-    # Suppression des stop_words
-    def delete_stop_words(self, list_word_tag):
+    # Suppression des symboles 
+    def delete_symbols(self, list_word_tag, symbols = """#§_-@+=*<>()[]{}/\\"'"""):
         reduced_list_word_tag = []
         for i in range(len(list_word_tag)):
-            e = list_word_tag[i][0].lower()
-            if e not in self.stop:
+            e = list_word_tag[i]
+            if e[0] not in symbols :
+                reduced_list_word_tag.append((e[0], e[1]))
+        return reduced_list_word_tag
+            
+    # Suppression des stop_words
+    def delete_stopwords(self, list_word_tag):
+        reduced_list_word_tag = []
+        for i in range(len(list_word_tag)):
+            e = list_word_tag[i][0]
+            if e.lower() not in self.stop:
                 reduced_list_word_tag.append((e, list_word_tag[i][1]))
         return reduced_list_word_tag
     
@@ -121,7 +115,7 @@ class FrenchPreprocessing(object):
         list_lemmatized = []
         
         for e in reduced_list_word_tag:
-            word = e[0]
+            word = e[0].lower()
             tag = e[1]
             lexique = self.lexique 
             # On lemmatise
@@ -142,7 +136,8 @@ class FrenchPreprocessing(object):
     def preprocessing(self, string):
         tokenized_list_of_string = self.tokenize(string)
         list_word_tag = self.tag(tokenized_list_of_string)
-        reduced_list_word_tag = self.delete_stop_words(list_word_tag)
-        reduced_list_word_tag_2 = self.delete_punct(reduced_list_word_tag)
-        lematized_string = self.lemmatize(reduced_list_word_tag_2)
+        reduced_list_word_tag = self.delete_stopwords(list_word_tag)
+        reduced_list_word_tag = self.delete_symbols(reduced_list_word_tag)
+        reduced_list_word_tag = self.delete_punct(reduced_list_word_tag)
+        lematized_string = self.lemmatize(reduced_list_word_tag)
         return lematized_string
