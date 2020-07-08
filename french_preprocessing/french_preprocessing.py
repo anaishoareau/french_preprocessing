@@ -143,7 +143,3 @@ class FrenchPreprocessing(object):
         reduced_list_word_tag = self.delete_punct(reduced_list_word_tag)
         lematized_string = self.lemmatize(reduced_list_word_tag)
         return lematized_string
-
-fp = FrenchPreprocessing(java_path = "C:/Program Files (x86)/Java/jre1.8.0_251/bin/java.exe", stopwords = default_stopwords, symbols = """#§_-@+=*<>()[]{}/\\"'""", punct = """!;:,.?-...""")
-
-string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
