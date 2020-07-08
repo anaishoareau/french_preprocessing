@@ -6,7 +6,7 @@ Date : 05/2020
 """
  
 # IMPORTS
-import os 
+import os
 import re
 from nltk.tag import StanfordPOSTagger
 from nltk import RegexpTokenizer
@@ -24,7 +24,7 @@ class FrenchPreprocessing(object):
         dir_path = os.path.dirname(os.path.abspath(__file__))
 
         # Chargement du lexique
-        f=open(dir_path + '/data/lexique.txt','r')
+        f=open(dir_path + '/data/lexique.txt','r', encoding="utf8")
         self.lexique = dict(eval(f.read()))
         
         # Défnition des stopwords
