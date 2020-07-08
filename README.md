@@ -112,10 +112,23 @@ of HLT-NAACL 2003, pp. 252-259.
 
 #### Initialisation de la classe FrenchPreprocessing :
 
+Les éléments par défaut sont : 
+```python
+default_stopwords = ["y","y'","m", "l", "d", "t", "qu", "s","c","m'",'hein', 'celle-là', 'ceux-ci', 'dring', 'sa', 'ollé', 'en', 'a', "d'", 'plutôt', 'auxquels', 'celles-ci', 'dès', 'tel', 'lui-meme', 'quelle', 'les', 'dont', 'aie', 'quand', 'pour', 'où', 'lès', 'suivant', 'ho', 'memes', 'hem', 'surtout', 'mien', 'tellement', 'qui', 'le', 'quels', 'tant', 'une', 'tien', 'ohé', 'i', 'mêmes', 'ceux', "l'", 'quelque', 'si', 'unes', 'lequel', 'tous', 'chacune', 'son', 'que', 'quel', 'au', 'ai', 'celui-là', 'chaque', 'ouste', 'es', 'hep', 'elles-mêmes', 'lors', 'cette', 'cependant', 'toc', 'tsouin', 'chacun', 'seule', 'siennes', 'hum', 'la', 'certains', "t'", 'trop', 'dans', 'desquels', 'lui', 'hors', 'celles-là', 'lui-même', 'pouah', 'toi-même', 'boum', 'vive', 'rend', 'mes', 'vos', 'nous', "qu'", 'des', 'tiens', 'hé', 'lorsque', 'zut', 'vlan', 'mienne', 'na', 'ma', 'selon', "s'", 'vous-mêmes', 'eh', 'ah', 'ses', 'meme', 'lesquels', 'miens', 'vôtres', 'paf', 'pif', 'quant-à-soi', 'tes', "c'", 'sien', 'ça', 'lesquelles', 'tout', 'telles', 'même', 'ces', 'maint', 'notre', 'quanta', 'elle-même', 'aupres', 'bas', 'votre', 'plusieurs', 'moi', 'par', 'hurrah', 'bah', 'laquelle', 'auxquelles', 'vé', 'peux', 'pure', 'tiennes', "aujourd'hui", 'hormis', 'couic', 'vous', 'ore', 'envers', 'moindres', 'aucune', 'gens', 'ouias', 'cela', 'quelles', 'aux', 'pff', 'etc', 'toutefois', 'leurs', 'ton', 'clic', 'las', 'pfut', "t'", 'toutes', 'cet', 'ta', 'da', 'toute', 'aucun', 'o', 'sapristi', 'quoi', 'desquelles', 'té', 'vôtre', 'euh', 'pres', 'as', 'fi', 'ci', 'allo', 'oh', "s'", 'quiconque', 'floc', 'avec', 'se', 'bat', 'tic', 'jusqu', "qu'", 'unique', 'certes', 'celles', 'dire', 'tienne', 'ha', 'nôtre', 'jusque', 'tac', 'ceux-là', 'sienne', 'uns', 'ouf', 'moi-même', 'et', 'vers', 'miennes', 'autrefois', 'houp', 'été', 'à', "d'", 'nouveau', 'être', 'peu', 'dite', "s'", 'dit', 'tels', 'ou', 'toi', 'entre', 'avoir', 'hop', 'delà', 'nos', 'tres', 'telle', 'voilà', 'dessous', 'soit', 'autres', 'psitt', 'hélas', 'anterieur', 'hou', 'près', 'auquel', 'juste', 'chut', 'un', 'stop', 'eux', 'ès', 'vifs', 'ce', 'quoique', 'du', 'moi-meme', 'mon', 'brrr', 'sous', 'parmi', 'deja','déja','celle', 'siens', 'suffisant', 'â', "l'", 'apres', 'sans', 'soi-même', 'là', 'pur', 'via', 'differentes', 'specifique', 'holà', 'tsoin', 'pan', 'car', 'donc', 'dits', 'merci', 'particulièrement', 'nous-mêmes', 'personne', 'allô', 'soi', 'voici', 'sur', 'vif', 'celle-ci', 'malgré', 'puis', 'sauf', 'autre', 'hui', 'ceci', 'leur', 'celui-ci', 'necessairement', 'sacrebleu', 'hue', 'eux-mêmes', 'outre', 'alors', 'desormais', 'plouf', 'longtemps', 'malgre', 'après', 'de', 'oust', 'neanmoins', 'certain', 'crac', 'depuis', 'olé', 'hi', 'te', 'puisque', "m'", 'me', 'ô', 'celui', 'aussi', 'rares', 'chiche', 'rien', 'pfft', "c'", 'vu', 'clac', 'duquel', 'aavons', 'avez', 'ont', 'eu', 'avais', 'avait', 'avions', 'aviez', 'avaient', 'eus', 'eut', 'eûmes', 'eûtes', 'eurent', 'aurai', 'auras', 'aura', 'aurons', 'aurez', 'auront', 'aurais', 'aurait', 'aurions', 'auriez', 'auraient', 'aies', 'ait', 'ayons', 'ayez', 'aient', 'eusse', 'eusses', 'eût', 'eussions', 'eussiez', 'eussent', 'ayant', 'suis', 'est', 'sommes', 'êtes', 'sont', 'étais', 'était', 'étions', 'étiez', 'étaient', 'fus', 'fut', 'fûmes', 'fûtes', 'furent', 'serai', 'seras', 'sera', 'serons', 'serez', 'seront', 'serais', 'serait', 'serions', 'seriez', 'seraient', 'sois', 'soyons', 'soyez', 'soient', 'fusse', 'fusses', 'fût', 'fussions', 'fussiez', 'fussent', 'étant']
+default_symbols = """#§_-@+=*<>()[]{}/\\"'"""
+default_punct = """!;:,.?-..."""
+```
+
+On peut imaginer compléter la liste default_stopwords par de nouveaux stopwords comme : 
+```python
+other_stopwords = ['mais','m’', 'flac', 'désormais', 'cinq', 'naturelles', 'differents', 'cent', 'nombreux', 'dernier', 'exterieur', 'peut', 'allaient', 'maximale', 'retour', 'relative', 'remarquable', 'cher', 'plus', 'tenir', 'chers', 'anterieure', 'afin', 'suivants', 'chez', 'comment', 'partant', 'autrement', 'abord', 'on', 'beau', 'd’', 'différentes', 'precisement', 'vives', 'possessif', 'vivat', 'pourrait', 'enfin', 'effet', 'treize', 'comparables', 'pire', 'parseme', 'compris', 'devers', 'peuvent', 'permet', 'possessifs', 'procedant', 'ainsi', 'bigre', 'avant', 'revoilà', 'naturelle', 'dessus', 'différente', 'quatre-vingt', 'ils', 'beaucoup', 'comparable', 'tu', 'dehors', 'tenant', 'trente', 'minimale', 'suit', 'troisièmement', 'néanmoins', 'ouverts', 'seulement', 'douzième', 'suffit', 'j’', 'toujours', 'quinze', 'ouverte', 'assez', 'anterieures', 'absolument', 'parlent', 'quelconque', 'notamment', 'combien', 't’', 'dix', 'directement', 'onze', 'sixième', 'cinquantaine', 'speculatif', 'dedans', 'différent', 'qu’', 'onzième', 'pu', 'subtiles', 'parler', 'suivre', 'avons', 'quant', 'parfois', 'environ', 'possible', 'non', 'probante', 'bravo', 's', 'moyennant', 'durant', 'restent', 'quelques', 'different', 'certaine', 'première', 'restant', 'devant', 'troisième', 'dix-sept', 'parle', 'premièrement', 'mince', 'revoici', 'c’', 'necessaire', 'uniformement', 'importe', 'ailleurs', 'neuvième', 'ouvert', 'faisaient', 'derrière', 'neuf', 'pas', 'aujourd', 'etais', 'pense', 'tente', 'seul', 'dix-neuf', 'sein', 'autrui', 'certaines', 'huitième', "j'", 'rarement', 'reste', 'vingt', 'encore', 'derriere', 'je', 'parce', 'naturel', 'egale', 'très', 'comme', 'rare', 'quatorze', 'directe', 'quatrième', 'etre', 'façon', 'chères', 'trois', 'nombreuses', 'souvent', 'vas', 'dixième', 'touchant', 'superpose', 'devra', 'strictement', 'plein', 'contre', 'etait', 'multiple', 'semblent', 'egales', "quelqu'un", 'exactement', 'deuxièmement', 'font', 's’', 'deux', 'cinquantième', 'premier', 'tardive', 'etaient', 'concernant', 'diverses', 'attendu', 'debout', 'passé', 'diverse', 'suivante', 'seize', 'proche', 'restrictif', 'allons', 'excepté', 'sept', 'etant', 'divers', 'feront', 'cinquante', 'faisant', 'particulière', 'laisser', 'multiples', 'nul', 'semble', 'pouvait', 'rendre', 'maintenant', 'sait', "n'", 'ni', 'ne', 'pourquoi', 'doit', 'relativement', 'extenso', 'egalement', 'douze', 'vais', 'dix-huit', 'bien', 'tend', 'uniques', 'prealable', 'basee', 'cinquième', 'chère', 'vont', 'derniere', 'deuxième', 'sent', 'n’', 'pourrais', 'va', 'specifiques', 'quatre', 'possibles', 'quarante', 'sinon', 'particulier', 'pendant', 'l’', 'mille', 'suffisante', 'moins', 'semblable', 'suivantes', 'il', 'ils', 'six', 'semblaient', 'différents', 'doivent', 'huit', 'elle', 'elles','septième', 'fais', 'quatrièmement', 'soixante', 'fait', 'probable']
+```
+
+Initialisation de l'outil :
 ```python
 from french_preprocessing.french_preprocessing import FrenchPreprocessing
 
-fp = FrenchPreprocessing(java_path = 'C:/Program Files/Java/jre1.8.0_211/bin/java.exe', stop_words = personalized_list)
+fp = FrenchPreprocessing(java_path = "C:/Program Files (x86)/Java/jre1.8.0_251/bin/java.exe", stopwords = default_stopwords, symbols = default_symbols, punct = default_punct)
 ```
 #### Méthodes de la classe FrenchPreprocessing :
 
@@ -129,7 +142,7 @@ Exemples :
 ```python 
 # Définitions des chaines de caractères
 
-string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
 complex_string = """Aujourd'hui j'ai plein d'adresses à tester comme http://test.com/eelg/.
 En voici quelques unes : https://www.example.com/, www.example.com/etcetc, example.com/etcetc, mais j'ai aussi des adresses emails : zeofjreoigjerigjer@gmail.com et krjr@offo.edu.au.
@@ -140,7 +153,7 @@ Mon numéro de téléphone est le 06 02 02 02 02 mais on peut aussi me joindre a
 
 fp.tokenize(string)
 
->>> ["J'", 'aime', 'les', 'chats', '.', 'Ce', 'sont', 'vraiment', 'des', 'êtres', 'supérieurs', '!', 'Un', 'jour', ',', "j'", 'en', 'suis', 'certaine', ',', 'ils', 'contrôleront', 'le', 'monde', '...']
+>>> ["J'", 'aime', 'les', 'chats', '.', 'Ce', 'sont', 'vraiment', 'des', 'êtres', 'supérieurs', '!', '(', 'Un', 'jour', ',', "j'", 'en', 'suis', 'certaine', ',', 'ils', 'contrôleront', 'le', 'monde', '...', ')', '#', 'chats', '#', 'révolution']
 
 fp.tokenize(complex_string)
 
@@ -155,51 +168,55 @@ du type : [(token1, tag1), (token2, tag2)].
 Exemple :
 
 ```python
-string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
 fp.tag(fp.tokenize(string))
 
->>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('.', 'ponct'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('!', 'ponct'), ('un', 'det'), ('jour', 'nc'), (',', 'ponct'), ("j'", 'cl'), ('en', 'cl'), ('suis', 'v'), ('certaine', 'adj'), (',', 'ponct'), ('ils', 'cl'), ('contrôleront', 'v'), ('le', 'det'), ('monde', 'nc'), ('...', 'ponct')]
+>>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('.', 'ponct'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('!', 'ponct'), ('(', 'det'), ('un', 'det'), ('jour', 'det'), (',', 'ponct'), ("j'", 'cl'), ('en', 'cl'), ('suis', 'v'), ('certaine', 'adj'), (',', 'ponct'), ('ils', 'cl'), ('contrôleront', 'v'), ('le', 'det'), ('monde', 'nc'), ('...', 'ponct'), (')', 'det'), ('#', 'det'), ('chats', 'nc'), ('#', 'det'), ('révolution', 'nc')]
 ```
 
-##### - fp.delete_stop_words(list_word_tag)
+##### - fp.delete_stopwords(list_word_tag)
 
 Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], supprime les stopwords proposés par défaut ou bien supprime ceux proposés à la défintion de FrenchPreprocessing, et retourne un objet du même type. 
-
-La liste des stopwords par défaut est : 
-```python
-stopwords = ["y","y'","m", "l", "d", "t", "qu", "s","c","m'",'hein', 'celle-là', 'ceux-ci', 'dring', 'sa', 'ollé', 'en', 'a', "d'", 'plutôt', 'auxquels', 'celles-ci', 'dès', 'tel', 'lui-meme', 'quelle', 'les', 'dont', 'aie', 'quand', 'pour', 'où', 'lès', 'suivant', 'ho', 'memes', 'hem', 'surtout', 'mien', 'tellement', 'qui', 'le', 'quels', 'tant', 'une', 'tien', 'ohé', 'i', 'mêmes', 'ceux', "l'", 'quelque', 'si', 'unes', 'lequel', 'tous', 'chacune', 'son', 'que', 'quel', 'au', 'ai', 'celui-là', 'chaque', 'ouste', 'es', 'hep', 'elles-mêmes', 'lors', 'cette', 'cependant', 'toc', 'tsouin', 'chacun', 'seule', 'siennes', 'hum', 'la', 'certains', "t'", 'trop', 'dans', 'desquels', 'lui', 'hors', 'celles-là', 'lui-même', 'pouah', 'toi-même', 'boum', 'vive', 'rend', 'mes', 'vos', 'nous', "qu'", 'des', 'tiens', 'hé', 'lorsque', 'zut', 'vlan', 'mienne', 'na', 'ma', 'selon', "s'", 'vous-mêmes', 'eh', 'ah', 'ses', 'meme', 'lesquels', 'miens', 'vôtres', 'paf', 'pif', 'quant-à-soi', 'tes', "c'", 'sien', 'ça', 'lesquelles', 'tout', 'telles', 'même', 'ces', 'maint', 'notre', 'quanta', 'elle-même', 'aupres', 'bas', 'votre', 'plusieurs', 'moi', 'par', 'hurrah', 'bah', 'laquelle', 'auxquelles', 'vé', 'peux', 'pure', 'tiennes', "aujourd'hui", 'hormis', 'couic', 'vous', 'ore', 'envers', 'moindres', 'aucune', 'gens', 'ouias', 'cela', 'quelles', 'aux', 'pff', 'etc', 'toutefois', 'leurs', 'ton', 'clic', 'las', 'pfut', "t'", 'toutes', 'cet', 'ta', 'da', 'toute', 'aucun', 'o', 'sapristi', 'quoi', 'desquelles', 'té', 'vôtre', 'euh', 'pres', 'as', 'fi', 'ci', 'allo', 'oh', "s'", 'quiconque', 'floc', 'avec', 'se', 'bat', 'tic', 'jusqu', "qu'", 'unique', 'certes', 'celles', 'dire', 'tienne', 'ha', 'nôtre', 'jusque', 'tac', 'ceux-là', 'sienne', 'uns', 'ouf', 'moi-même', 'et', 'vers', 'miennes', 'autrefois', 'houp', 'été', 'à', "d'", 'nouveau', 'être', 'peu', 'dite', "s'", 'dit', 'tels', 'ou', 'toi', 'entre', 'avoir', 'hop', 'delà', 'nos', 'tres', 'telle', 'voilà', 'dessous', 'soit', 'autres', 'psitt', 'hélas', 'anterieur', 'hou', 'près', 'auquel', 'juste', 'chut', 'un', 'stop', 'eux', 'ès', 'vifs', 'ce', 'quoique', 'du', 'moi-meme', 'mon', 'brrr', 'sous', 'parmi', 'deja','déja','celle', 'siens', 'suffisant', 'â', "l'", 'apres', 'sans', 'soi-même', 'là', 'pur', 'via', 'differentes', 'specifique', 'holà', 'tsoin', 'pan', 'car', 'donc', 'dits', 'merci', 'particulièrement', 'nous-mêmes', 'personne', 'allô', 'soi', 'voici', 'sur', 'vif', 'celle-ci', 'malgré', 'puis', 'sauf', 'autre', 'hui', 'ceci', 'leur', 'celui-ci', 'necessairement', 'sacrebleu', 'hue', 'eux-mêmes', 'outre', 'alors', 'desormais', 'plouf', 'longtemps', 'malgre', 'après', 'de', 'oust', 'neanmoins', 'certain', 'crac', 'depuis', 'olé', 'hi', 'te', 'puisque', "m'", 'me', 'ô', 'celui', 'aussi', 'rares', 'chiche', 'rien', 'pfft', "c'", 'vu', 'clac', 'duquel', 'aavons', 'avez', 'ont', 'eu', 'avais', 'avait', 'avions', 'aviez', 'avaient', 'eus', 'eut', 'eûmes', 'eûtes', 'eurent', 'aurai', 'auras', 'aura', 'aurons', 'aurez', 'auront', 'aurais', 'aurait', 'aurions', 'auriez', 'auraient', 'aies', 'ait', 'ayons', 'ayez', 'aient', 'eusse', 'eusses', 'eût', 'eussions', 'eussiez', 'eussent', 'ayant', 'suis', 'est', 'sommes', 'êtes', 'sont', 'étais', 'était', 'étions', 'étiez', 'étaient', 'fus', 'fut', 'fûmes', 'fûtes', 'furent', 'serai', 'seras', 'sera', 'serons', 'serez', 'seront', 'serais', 'serait', 'serions', 'seriez', 'seraient', 'sois', 'soyons', 'soyez', 'soient', 'fusse', 'fusses', 'fût', 'fussions', 'fussiez', 'fussent', 'étant']
-```
-
-On peut imaginer compléter cette liste par de nouveaux stopwords comme : 
-```python
-other_stopwords = ['mais','m’', 'flac', 'désormais', 'cinq', 'naturelles', 'differents', 'cent', 'nombreux', 'dernier', 'exterieur', 'peut', 'allaient', 'maximale', 'retour', 'relative', 'remarquable', 'cher', 'plus', 'tenir', 'chers', 'anterieure', 'afin', 'suivants', 'chez', 'comment', 'partant', 'autrement', 'abord', 'on', 'beau', 'd’', 'différentes', 'precisement', 'vives', 'possessif', 'vivat', 'pourrait', 'enfin', 'effet', 'treize', 'comparables', 'pire', 'parseme', 'compris', 'devers', 'peuvent', 'permet', 'possessifs', 'procedant', 'ainsi', 'bigre', 'avant', 'revoilà', 'naturelle', 'dessus', 'différente', 'quatre-vingt', 'ils', 'beaucoup', 'comparable', 'tu', 'dehors', 'tenant', 'trente', 'minimale', 'suit', 'troisièmement', 'néanmoins', 'ouverts', 'seulement', 'douzième', 'suffit', 'j’', 'toujours', 'quinze', 'ouverte', 'assez', 'anterieures', 'absolument', 'parlent', 'quelconque', 'notamment', 'combien', 't’', 'dix', 'directement', 'onze', 'sixième', 'cinquantaine', 'speculatif', 'dedans', 'différent', 'qu’', 'onzième', 'pu', 'subtiles', 'parler', 'suivre', 'avons', 'quant', 'parfois', 'environ', 'possible', 'non', 'probante', 'bravo', 's', 'moyennant', 'durant', 'restent', 'quelques', 'different', 'certaine', 'première', 'restant', 'devant', 'troisième', 'dix-sept', 'parle', 'premièrement', 'mince', 'revoici', 'c’', 'necessaire', 'uniformement', 'importe', 'ailleurs', 'neuvième', 'ouvert', 'faisaient', 'derrière', 'neuf', 'pas', 'aujourd', 'etais', 'pense', 'tente', 'seul', 'dix-neuf', 'sein', 'autrui', 'certaines', 'huitième', "j'", 'rarement', 'reste', 'vingt', 'encore', 'derriere', 'je', 'parce', 'naturel', 'egale', 'très', 'comme', 'rare', 'quatorze', 'directe', 'quatrième', 'etre', 'façon', 'chères', 'trois', 'nombreuses', 'souvent', 'vas', 'dixième', 'touchant', 'superpose', 'devra', 'strictement', 'plein', 'contre', 'etait', 'multiple', 'semblent', 'egales', "quelqu'un", 'exactement', 'deuxièmement', 'font', 's’', 'deux', 'cinquantième', 'premier', 'tardive', 'etaient', 'concernant', 'diverses', 'attendu', 'debout', 'passé', 'diverse', 'suivante', 'seize', 'proche', 'restrictif', 'allons', 'excepté', 'sept', 'etant', 'divers', 'feront', 'cinquante', 'faisant', 'particulière', 'laisser', 'multiples', 'nul', 'semble', 'pouvait', 'rendre', 'maintenant', 'sait', "n'", 'ni', 'ne', 'pourquoi', 'doit', 'relativement', 'extenso', 'egalement', 'douze', 'vais', 'dix-huit', 'bien', 'tend', 'uniques', 'prealable', 'basee', 'cinquième', 'chère', 'vont', 'derniere', 'deuxième', 'sent', 'n’', 'pourrais', 'va', 'specifiques', 'quatre', 'possibles', 'quarante', 'sinon', 'particulier', 'pendant', 'l’', 'mille', 'suffisante', 'moins', 'semblable', 'suivantes', 'il', 'ils', 'six', 'semblaient', 'différents', 'doivent', 'huit', 'elle', 'elles','septième', 'fais', 'quatrièmement', 'soixante', 'fait', 'probable']
-```
 
 Exemple :
 
 ```python
 # Dans cette exemple, les stopwords supprimés sont ceux qui font partie de la liste par défaut.
 
-string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
-fp.delete_stop_words(fp.tag(fp.tokenize(string)))
+fp.delete_stopwords(fp.tag(fp.tokenize(string)))
 
->>> [("j'", 'cl'), ('aime', 'v'), ('chats', 'nc'), ('.', 'ponct'), ('vraiment', 'adv'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('!', 'ponct'), ('jour', 'nc'), (',', 'ponct'), ("j'", 'cl'), ('certaine', 'adj'), (',', 'ponct'), ('ils', 'cl'), ('contrôleront', 'v'), ('monde', 'nc'), ('...', 'ponct')]
+>>> [("j'", 'cl'), ('aime', 'v'), ('chats', 'nc'), ('.', 'ponct'), ('vraiment', 'adv'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('!', 'ponct'), ('(', 'det'), ('jour', 'det'), (',', 'ponct'), ("j'", 'cl'), ('certaine', 'adj'), (',', 'ponct'), ('ils', 'cl'), ('contrôleront', 'v'), ('monde', 'nc'), ('...', 'ponct'), (')', 'det'), ('#', 'det'), ('chats', 'nc'), ('#', 'det'), ('révolution', 'nc')]
 ```
 
-##### - fp.delete_punct(list_word_tag)
+##### - fp.delete_symbols(list_word_tag)
 
-Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], supprime la ponctuation, et retourne un objet du même type. 
+Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], supprime les symboles proposés en entrée ou ceux par défaut : #§_-@+=*<>()[]{}/\\"', et retourne un objet du même type. 
 
 Exemple :
 
 ```python
-string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
 fp.delete_punct(fp.delete_stop_words(fp.tag(fp.tokenize(string))))
 
->>> [("j'", 'cl'), ('aime', 'v'), ('chats', 'nc'), ('vraiment', 'adv'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('jour', 'nc'), ("j'", 'cl'), ('certaine', 'adj'), ('ils', 'cl'), ('contrôleront', 'v'), ('monde', 'nc')]
+>>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('.', 'ponct'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('!', 'ponct'), ('un', 'det'), ('jour', 'det'), (',', 'ponct'), ("j'", 'cl'), ('en', 'cl'), ('suis', 'v'), ('certaine', 'adj'), (',', 'ponct'), ('ils', 'cl'), ('contrôleront', 'v'), ('le', 'det'), ('monde', 'nc'), ('...', 'ponct'), ('chats', 'nc'), ('révolution', 'nc')]
+```
+
+##### - fp.delete_punct(list_word_tag)
+
+Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], supprime les symboles de ponctuation proposés en entrée ou ceux par défaut : !;:,.?-..., et retourne un objet du même type. 
+
+Exemple :
+
+```python
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
+
+fp.delete_punct(fp.delete_stop_words(fp.tag(fp.tokenize(string))))
+
+>>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('(', 'det'), ('un', 'det'), ('jour', 'det'), ("j'", 'cl'), ('en', 'cl'), ('suis', 'v'), ('certaine', 'adj'), ('ils', 'cl'), ('contrôleront', 'v'), ('le', 'det'), ('monde', 'nc'), (')', 'det'), ('#', 'det'), ('chats', 'nc'), ('#', 'det'), ('révolution', 'nc')]
 ```
 
 ##### - fp.lemmatize(list_word_tag)
@@ -210,11 +227,11 @@ et retourne une string des lemmes des tokens de la liste : "lemma_token_1 lemma_
 Exemple :
 
 ```python
-string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
-fp.lemmatize(fp.delete_punct(fp.delete_stop_words(fp.tag(fp.tokenize(string)))))
+fp.lemmatize(fp.delete_punct(fp.delete_symbols(fp.delete_stopwords(fp.tag(fp.tokenize(string))))))
 
->>> je aimer chat vraiment être supérieur jour je certain il contrôler monde
+>>> je aimer chat vraiment être supérieur jour je certain il contrôler monde chat révolution
 ```
 
 ##### - fp.preprocessing(string)
@@ -225,11 +242,11 @@ Cette méthode retourne donc la string ayant subi un pré-processing complet.
 Exemple :
 
 ```python
-string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! Un jour, j'en suis certaine, ils contrôleront le monde..."
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
 fp.preprocessing(string)
 
->>> je aimer chat vraiment être supérieur jour je certain il contrôler monde
+>>> je aimer chat vraiment être supérieur jour je certain il contrôler monde chat révolution
 ```
 
 ## lexique_tools.py : Détail des méthodes et exemples d'utilisation
