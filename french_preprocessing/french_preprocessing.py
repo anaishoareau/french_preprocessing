@@ -107,7 +107,7 @@ class FrenchPreprocessing(object):
                 #"index": idx
             }
             entities += [entity]
-    
+ 
         # Reshape camemBERT outputs
         entities_reshaped = []
         for e in entities:
@@ -115,23 +115,32 @@ class FrenchPreprocessing(object):
                 e['word'] = re.sub('▁', '', e['word'])
                 entities_reshaped.append(e)
         
-        entities_reshaped_2 = []
-        i,j = 0,0
-        while i < len(pretokens):
-            if entities_reshaped[j]['word'] == pretokens[i]:
-                entities_reshaped_2.append((entities_reshaped[j]['word'].lower(), camembert_tag_reduction(entities_reshaped[j]['entity'])))
-                i+=1
-                j+=1
-            else:
-                tag = entities_reshaped[j]['entity'] 
-                word = entities_reshaped[j]['word']
-                while word != pretokens[i]:
+        # <unk> gestion
+        unk = False
+        for e in entities_reshaped:
+            if e['word'] == '<unk>':
+                unk = True
+        if unk == False:    
+            entities_reshaped_2 = []
+            i,j = 0,0
+            while i < len(pretokens):
+                if entities_reshaped[j]['word'] == pretokens[i]:
+                    entities_reshaped_2.append((entities_reshaped[j]['word'].lower(), camembert_tag_reduction(entities_reshaped[j]['entity'])))
+                    i+=1
                     j+=1
-                    word += entities_reshaped[j]['word']
-                entities_reshaped_2.append((word.lower(),camembert_tag_reduction(tag)))
-                i+=1
-                j+=1
-        return entities_reshaped_2
+                else:
+                    tag = entities_reshaped[j]['entity'] 
+                    word = entities_reshaped[j]['word']
+                    while word != pretokens[i]:
+                        j+=1
+                        word += entities_reshaped[j]['word']
+    
+                    entities_reshaped_2.append((word.lower(),camembert_tag_reduction(tag)))
+                    i+=1
+                    j+=1
+            return entities_reshaped_2
+        else:
+            return "ERROR : unknown character in text"
 
 
     # La fonction tag :
@@ -151,52 +160,64 @@ class FrenchPreprocessing(object):
             
     # Suppression des stop_words
     def delete_stopwords(self, list_word_tag):
-        reduced_list_word_tag = []
-        for i in range(len(list_word_tag)):
-            e = list_word_tag[i][0]
-            if e.lower() not in self.stopwords:
-                reduced_list_word_tag.append((e, list_word_tag[i][1]))
-        return reduced_list_word_tag
+        if list_word_tag == "ERROR : unknown character in text":
+            return "ERROR : unknown character in text"
+        else:
+            reduced_list_word_tag = []
+            for i in range(len(list_word_tag)):
+                e = list_word_tag[i][0]
+                if e.lower() not in self.stopwords:
+                    reduced_list_word_tag.append((e, list_word_tag[i][1]))
+            return reduced_list_word_tag
     
     # Suppression des symboles 
     def delete_symbols(self, list_word_tag):
-        reduced_list_word_tag = []
-        for i in range(len(list_word_tag)):
-            e = list_word_tag[i]
-            if e[0] not in self.symbols :
-                reduced_list_word_tag.append((e[0], e[1]))
-        return reduced_list_word_tag
+        if list_word_tag == "ERROR : unknown character in text":
+            return "ERROR : unknown character in text"
+        else:
+            reduced_list_word_tag = []
+            for i in range(len(list_word_tag)):
+                e = list_word_tag[i]
+                if e[0] not in self.symbols :
+                    reduced_list_word_tag.append((e[0], e[1]))
+            return reduced_list_word_tag
     
     # Suppression de la ponctuation
     def delete_punct(self, list_word_tag):
-        reduced_list_word_tag = []
-        for i in range(len(list_word_tag)):
-            e = list_word_tag[i]
-            if e[0] not in self.punct :
-                reduced_list_word_tag.append((e[0], e[1]))
-        return reduced_list_word_tag
+        if list_word_tag == "ERROR : unknown character in text":
+            return "ERROR : unknown character in text"
+        else:
+            reduced_list_word_tag = []
+            for i in range(len(list_word_tag)):
+                e = list_word_tag[i]
+                if e[0] not in self.punct :
+                    reduced_list_word_tag.append((e[0], e[1]))
+            return reduced_list_word_tag
     
     # La fonction lemmatise :
     # - prend en argument une liste de tuples du type (mot de la liste, son tag)
     # - renvoie une liste qui contient les mots de la phrase lemmatisés (strings)
     def lemmatize(self, reduced_list_word_tag):
-        list_lemmatized = []
-        
-        for e in reduced_list_word_tag:
-            word = e[0].lower()
-            tag = e[1]
-            lexique = self.lexique 
-            # On lemmatise
-            if word in lexique.keys():
-                dict_lemma = lexique[word]
-                if tag in dict_lemma.keys():
-                    list_lemmatized.append(dict_lemma[tag])
+        if reduced_list_word_tag == "ERROR : unknown character in text":
+            return "ERROR : unknown character in text"
+        else:
+            list_lemmatized = []
+            
+            for e in reduced_list_word_tag:
+                word = e[0].lower()
+                tag = e[1]
+                lexique = self.lexique 
+                # On lemmatise
+                if word in lexique.keys():
+                    dict_lemma = lexique[word]
+                    if tag in dict_lemma.keys():
+                        list_lemmatized.append(dict_lemma[tag])
+                    else:
+                        list_lemmatized.append(word)
                 else:
                     list_lemmatized.append(word)
-            else:
-                list_lemmatized.append(word)
-                
-        return " ".join(list_lemmatized)
+                    
+            return " ".join(list_lemmatized)
     
     # Méthode qui réalise le préprocessing d'un texte en français 
     # Prend une string et retourne une string qui a subit 
