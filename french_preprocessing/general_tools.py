@@ -42,6 +42,52 @@ def stanford_tag_reduction(tag):
         
     return(tag_reduc.lower())
     
+# Fonction de réduction des tags de camemBERT
+#Tags d'origine de camembert (http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf) :
+    # "O",
+    # "ADJ","ADJWH",
+    # "ADV","ADVWH",
+    # "CC", "CS",
+    # "CLO","CLR","CLS",
+    # "DET","DETWH",
+    # "ET",
+    # "I",
+    # "NC", "PREF",
+    # "NPP",
+    # "P","P+D",
+    # "PONCT",
+    # "PRO","PROREL","PROWH",
+    # "U",
+    # "V","VIMP","VINF","VPP","VPR","VS"
+def camembert_tag_reduction(tag):
+    tag_reduc = ''
+    if tag in ["VIMP","VINF","VPP","VPR","VS"]:
+        tag_reduc = 'V'
+    elif tag in ['PREF']:
+        tag_reduc = 'NC'
+    elif tag in ['CS', 'CC']:
+        tag_reduc = 'C'
+    elif tag in ['CLS', 'CLO', 'CLR']:
+        tag_reduc = 'CL'
+    elif tag in ['ADJWH']:
+        tag_reduc = 'ADJ'
+    elif tag == 'ADVWH':
+        tag_reduc = 'ADV'
+    elif tag in ["PROREL","PROWH"]:
+        tag_reduc = 'PRO'
+    elif tag in ['DETWH']:
+        tag_reduc = 'DET'
+    elif tag == 'PUNC':
+        tag_reduc = 'PONCT'
+    elif tag in ['P', 'P+D']:
+        tag_reduc = 'PREP'  
+    elif tag in ["O", "U"]:
+        tag_reduc = 'ET'
+    else:
+        tag_reduc = tag
+        
+    return(tag_reduc.lower())
+
 # Fonction de réduction des tags présents à l'origine dans le Lexique382
 #Tags d'origine du Lexique382 : 'ADV', 'ADJ','PRO', 'PRE', 'NOM', 'VER', 'ONO', 
 #'CON', 'AUX', 'ART', 'EXP'
