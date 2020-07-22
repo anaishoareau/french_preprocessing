@@ -53,6 +53,9 @@ class FrenchPreprocessing(object):
         
         self.model = AutoModelForTokenClassification.from_pretrained("gilf/french-camembert-postag-model")
         self.tokenizer = AutoTokenizer.from_pretrained("gilf/french-camembert-postag-model")
+        
+        #self.model = AutoModelForTokenClassification.from_pretrained("camembert/camembert-large")
+        #self.tokenizer = AutoTokenizer.from_pretrained("camembert/camembert-large")
 
     # La fonction tokenize :
     # - prend en argument une phrase à tokeniser (string)
@@ -85,92 +88,95 @@ class FrenchPreprocessing(object):
 
     # Tokenisation
     def tag(self, pretokens):
-
-        #Sentence segmentation
-        pretokens_sentences = []
-        not_ponct = []
-        for g in itertools.groupby(pretokens, key = lambda x: x not in ["!",".","?","..."]):
-            pretokens_sentences.append(list(g[1]))
-            not_ponct.append(g[0])
         
-        sentences = []
-        
-        if not_ponct[0]:
-            for i in range(0,len(pretokens_sentences)-1,2):
-                sentences.append(pretokens_sentences[i]+pretokens_sentences[i+1])
-        else:
-            sentences.append(pretokens_sentences[0])
-            for i in range(1,len(pretokens_sentences)-1,2):
-                sentences.append(pretokens_sentences[i]+pretokens_sentences[i+1])
-        
-        tag_sentences = []
-
-        for s in sentences:
+        if pretokens == []:
+            return []
+        else : 
+            #Sentence segmentation
+            pretokens_sentences = []
+            not_ponct = []
+            for g in itertools.groupby(pretokens, key = lambda x: x not in ["!",".","?","..."]):
+                pretokens_sentences.append(list(g[1]))
+                not_ponct.append(g[0])
             
-            tag_sentence = []
+            sentences = []
             
-            # camemBERT tokenization
-            tokens = self.tokenizer(s, is_pretokenized = True, return_tensors="pt")["input_ids"] #, padding=True, truncation=True
-            input_ids = self.tokenizer(s, is_pretokenized = True, return_tensors="pt")["input_ids"][0] #, padding=True, truncation=True
-
-            # Tagging
-            with torch.no_grad():
-                entities = self.model(tokens)[0][0].cpu().numpy()
-                input_ids = tokens.cpu().numpy()[0]
-            
-            score = np.exp(entities) / np.exp(entities).sum(-1, keepdims=True)
-            labels_idx = score.argmax(axis=-1)
-            
-            filtered_labels_idx = [(idx, label_idx) for idx, label_idx in enumerate(labels_idx)]
-                
-            entities = []
-            for idx, label_idx in filtered_labels_idx:
-                entity = {
-                    "word": self.tokenizer.convert_ids_to_tokens(int(input_ids[idx])),
-                    #"score": score[idx][label_idx].item(),
-                    "entity": self.model.config.id2label[label_idx],
-                    #"index": idx
-                }
-                entities += [entity]
-                
-            # Reshape camemBERT outputs
-            entities_reshaped = []
-            for e in entities:
-                if e['word'] not in ['<s>', '</s>', '▁']:
-                    e['word'] = re.sub('▁', '', e['word'])
-                    entities_reshaped.append(e)
-            
-            # <unk> gestion
-            unk = False
-            for e in entities_reshaped:
-                if e['word'] == '<unk>':
-                    unk = True
-            if unk == False:    
-                entities_reshaped_2 = []
-                i,j = 0,0
-                while i < len(s):
-                    if entities_reshaped[j]['word'] == s[i]:
-                        entities_reshaped_2.append((entities_reshaped[j]['word'].lower(), camembert_tag_reduction(entities_reshaped[j]['entity'])))
-                        i+=1
-                        j+=1
-                    else:
-                        tag = entities_reshaped[j]['entity'] 
-                        word = entities_reshaped[j]['word']
-                        while word != s[i]:
-                            j+=1
-                            word += entities_reshaped[j]['word']
-        
-                        entities_reshaped_2.append((word.lower(),camembert_tag_reduction(tag)))
-                        i+=1
-                        j+=1
-                tag_sentence = entities_reshaped_2
+            if not_ponct[0]:
+                for i in range(0,len(pretokens_sentences)-1,2):
+                    sentences.append(pretokens_sentences[i]+pretokens_sentences[i+1])
             else:
-                tag_sentence = entities_reshaped
-            tag_sentences.append(tag_sentence)
- 
-        list_word_tag = [val for sublist in tag_sentences for val in sublist]
+                sentences.append(pretokens_sentences[0])
+                for i in range(1,len(pretokens_sentences)-1,2):
+                    sentences.append(pretokens_sentences[i]+pretokens_sentences[i+1])
+            
+            tag_sentences = []
+    
+            for s in sentences:
 
-        return list_word_tag
+                tag_sentence = []
+                
+                # camemBERT tokenization
+                try:
+                    tokens = self.tokenizer(s, is_pretokenized = True, return_tensors="pt")["input_ids"] #, padding=True, truncation=True
+                    input_ids = self.tokenizer(s, is_pretokenized = True, return_tensors="pt")["input_ids"][0] #, padding=True, truncation=True
+
+                    # Tagging
+                    with torch.no_grad():
+                        entities = self.model(tokens)[0][0].cpu().numpy()
+                        input_ids = tokens.cpu().numpy()[0]
+                    
+                    score = np.exp(entities) / np.exp(entities).sum(-1, keepdims=True)
+                    labels_idx = score.argmax(axis=-1)
+                    
+                    filtered_labels_idx = [(idx, label_idx) for idx, label_idx in enumerate(labels_idx)]
+                        
+                    entities = []
+                    for idx, label_idx in filtered_labels_idx:
+                        entity = (self.tokenizer.convert_ids_to_tokens(int(input_ids[idx])), self.model.config.id2label[label_idx])
+                        entities += [entity]
+                        
+                    # Reshape camemBERT outputs
+                    entities_reshaped = []
+                    for e in entities:
+                        if e[0] not in ['<s>', '</s>', '▁']:
+                            e0 = re.sub('▁', '', e[0])
+                            entities_reshaped.append((e0,e[1]))
+                    
+                    # <unk> gestion
+                    unk = False
+                    for e in entities_reshaped:
+                        if e[0] == '<unk>':
+                            unk = True
+                    if unk == False:    
+                        entities_reshaped_2 = []
+                        i,j = 0,0
+                        while i < len(s):
+                            if entities_reshaped[j][0] == s[i]:
+                                entities_reshaped_2.append((entities_reshaped[j][0].lower(), camembert_tag_reduction(entities_reshaped[j][1])))
+                                i+=1
+                                j+=1
+                            else:
+                                tag = entities_reshaped[j][1] 
+                                word = entities_reshaped[j][0]
+                                while word != s[i]:
+                                    j+=1
+                                    word += entities_reshaped[j][0]
+                
+                                entities_reshaped_2.append((word.lower(),camembert_tag_reduction(tag)))
+                                i+=1
+                                j+=1
+                        tag_sentence = entities_reshaped_2
+                    else:
+                        tag_sentence = entities_reshaped
+                    
+                except:
+                    tag_sentence = [(e,'o') for e in s]
+                
+                tag_sentences.append(tag_sentence)
+                
+            list_word_tag = [val for sublist in tag_sentences for val in sublist]
+    
+            return list_word_tag
 
 
     # La fonction tag :
@@ -248,3 +254,4 @@ class FrenchPreprocessing(object):
         reduced_list_word_tag = self.delete_punct(reduced_list_word_tag)
         lematized_string = self.lemmatize(reduced_list_word_tag)
         return lematized_string
+
