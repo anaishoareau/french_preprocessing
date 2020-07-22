@@ -169,8 +169,7 @@ class FrenchPreprocessing(object):
             tag_sentences.append(tag_sentence)
  
         list_word_tag = [val for sublist in tag_sentences for val in sublist]
-        print(list_word_tag)
-        
+
         return list_word_tag
 
 
