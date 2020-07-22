@@ -59,6 +59,8 @@ class FrenchPreprocessing(object):
     # - renvoie une liste contenant les mots de la phrase tokenisée
     def pretokenize(self, string):
         # Supression des espaces non nécessaires
+        indent = re.compile(r'[\t\n\r\f\v]+')
+        string = re.sub(indent, '. ', string)
         space = re.compile(r' +')
         string = re.sub(space, ' ', string)
         
@@ -87,7 +89,7 @@ class FrenchPreprocessing(object):
         #Sentence segmentation
         pretokens_sentences = []
         not_ponct = []
-        for g in itertools.groupby(pretokens, key = lambda x: x not in ["!",".","?",".","..."]):
+        for g in itertools.groupby(pretokens, key = lambda x: x not in ["!",".","?","..."]):
             pretokens_sentences.append(list(g[1]))
             not_ponct.append(g[0])
         
@@ -102,7 +104,7 @@ class FrenchPreprocessing(object):
                 sentences.append(pretokens_sentences[i]+pretokens_sentences[i+1])
         
         tag_sentences = []
-        
+
         for s in sentences:
             
             tag_sentence = []
@@ -130,7 +132,7 @@ class FrenchPreprocessing(object):
                     #"index": idx
                 }
                 entities += [entity]
-
+                
             # Reshape camemBERT outputs
             entities_reshaped = []
             for e in entities:
