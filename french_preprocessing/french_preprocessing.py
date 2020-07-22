@@ -10,6 +10,7 @@ import os
 import re
 import torch
 import numpy as np
+import itertools
 
 from transformers import AutoTokenizer, AutoModelForTokenClassification
 
@@ -53,7 +54,6 @@ class FrenchPreprocessing(object):
         self.model = AutoModelForTokenClassification.from_pretrained("gilf/french-camembert-postag-model")
         self.tokenizer = AutoTokenizer.from_pretrained("gilf/french-camembert-postag-model")
 
-        
     # La fonction tokenize :
     # - prend en argument une phrase à tokeniser (string)
     # - renvoie une liste contenant les mots de la phrase tokenisée
@@ -75,72 +75,101 @@ class FrenchPreprocessing(object):
         # - Nom composé
         # - Mot courant
         # - Ponctuation
-        tokenizer = RegexpTokenizer(r'''(\w{2,}'\w+|\w'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-\.]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:@%/;$~_?\+\-=\\\.&\|£€]+[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\(\)\[\]\{\}\"\'\.,;\:\?!\-\_\*\#\§=+<>/\\])''')
-        pretokens = tokenizer.tokenize(string)
+        pretokenizer = RegexpTokenizer(r'''(\w{2,}'\w+|\w'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-\.]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:@%/;$~_?\+\-=\\\.&\|£€]+[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\(\)\[\]\{\}\"\'\.,;\:\?!\-\_\*\#\§=+<>/\\])''')
+        pretokens = pretokenizer.tokenize(string)
         return pretokens
     
     # camemBERT tokenisation
 
     # Tokenisation
     def tag(self, pretokens):
+
+        #Sentence segmentation
+        pretokens_sentences = []
+        not_ponct = []
+        for g in itertools.groupby(pretokens, key = lambda x: x not in ["!",".","?",".","..."]):
+            pretokens_sentences.append(list(g[1]))
+            not_ponct.append(g[0])
         
-        # camemBERT tokenization
-        tokens = self.tokenizer(pretokens, is_pretokenized = True, return_tensors="pt")["input_ids"]
-        input_ids = self.tokenizer(pretokens, is_pretokenized = True, return_tensors="pt")["input_ids"][0]
+        sentences = []
         
-        # Tagging
-        with torch.no_grad():
-            entities = self.model(tokens)[0][0].cpu().numpy()
-            input_ids = tokens.cpu().numpy()[0]
-        
-        score = np.exp(entities) / np.exp(entities).sum(-1, keepdims=True)
-        labels_idx = score.argmax(axis=-1)
-        
-        filtered_labels_idx = [(idx, label_idx) for idx, label_idx in enumerate(labels_idx)]
-            
-        entities = []
-        for idx, label_idx in filtered_labels_idx:
-            entity = {
-                "word": self.tokenizer.convert_ids_to_tokens(int(input_ids[idx])),
-                #"score": score[idx][label_idx].item(),
-                "entity": self.model.config.id2label[label_idx],
-                #"index": idx
-            }
-            entities += [entity]
- 
-        # Reshape camemBERT outputs
-        entities_reshaped = []
-        for e in entities:
-            if e['word'] not in ['<s>', '</s>', '▁']:
-                e['word'] = re.sub('▁', '', e['word'])
-                entities_reshaped.append(e)
-        
-        # <unk> gestion
-        unk = False
-        for e in entities_reshaped:
-            if e['word'] == '<unk>':
-                unk = True
-        if unk == False:    
-            entities_reshaped_2 = []
-            i,j = 0,0
-            while i < len(pretokens):
-                if entities_reshaped[j]['word'] == pretokens[i]:
-                    entities_reshaped_2.append((entities_reshaped[j]['word'].lower(), camembert_tag_reduction(entities_reshaped[j]['entity'])))
-                    i+=1
-                    j+=1
-                else:
-                    tag = entities_reshaped[j]['entity'] 
-                    word = entities_reshaped[j]['word']
-                    while word != pretokens[i]:
-                        j+=1
-                        word += entities_reshaped[j]['word']
-    
-                    entities_reshaped_2.append((word.lower(),camembert_tag_reduction(tag)))
-                    i+=1
-                    j+=1
-            return entities_reshaped_2
+        if not_ponct[0]:
+            for i in range(0,len(pretokens_sentences)-1,2):
+                sentences.append(pretokens_sentences[i]+pretokens_sentences[i+1])
         else:
-            return "ERROR : unknown character in text"
+            sentences.append(pretokens_sentences[0])
+            for i in range(1,len(pretokens_sentences)-1,2):
+                sentences.append(pretokens_sentences[i]+pretokens_sentences[i+1])
+        
+        tag_sentences = []
+        
+        for s in sentences:
+            
+            tag_sentence = []
+            
+            # camemBERT tokenization
+            tokens = self.tokenizer(s, is_pretokenized = True, return_tensors="pt")["input_ids"] #, padding=True, truncation=True
+            input_ids = self.tokenizer(s, is_pretokenized = True, return_tensors="pt")["input_ids"][0] #, padding=True, truncation=True
+
+            # Tagging
+            with torch.no_grad():
+                entities = self.model(tokens)[0][0].cpu().numpy()
+                input_ids = tokens.cpu().numpy()[0]
+            
+            score = np.exp(entities) / np.exp(entities).sum(-1, keepdims=True)
+            labels_idx = score.argmax(axis=-1)
+            
+            filtered_labels_idx = [(idx, label_idx) for idx, label_idx in enumerate(labels_idx)]
+                
+            entities = []
+            for idx, label_idx in filtered_labels_idx:
+                entity = {
+                    "word": self.tokenizer.convert_ids_to_tokens(int(input_ids[idx])),
+                    #"score": score[idx][label_idx].item(),
+                    "entity": self.model.config.id2label[label_idx],
+                    #"index": idx
+                }
+                entities += [entity]
+
+            # Reshape camemBERT outputs
+            entities_reshaped = []
+            for e in entities:
+                if e['word'] not in ['<s>', '</s>', '▁']:
+                    e['word'] = re.sub('▁', '', e['word'])
+                    entities_reshaped.append(e)
+            
+            # <unk> gestion
+            unk = False
+            for e in entities_reshaped:
+                if e['word'] == '<unk>':
+                    unk = True
+            if unk == False:    
+                entities_reshaped_2 = []
+                i,j = 0,0
+                while i < len(s):
+                    if entities_reshaped[j]['word'] == s[i]:
+                        entities_reshaped_2.append((entities_reshaped[j]['word'].lower(), camembert_tag_reduction(entities_reshaped[j]['entity'])))
+                        i+=1
+                        j+=1
+                    else:
+                        tag = entities_reshaped[j]['entity'] 
+                        word = entities_reshaped[j]['word']
+                        while word != s[i]:
+                            j+=1
+                            word += entities_reshaped[j]['word']
+        
+                        entities_reshaped_2.append((word.lower(),camembert_tag_reduction(tag)))
+                        i+=1
+                        j+=1
+                tag_sentence = entities_reshaped_2
+            else:
+                tag_sentence = entities_reshaped
+            tag_sentences.append(tag_sentence)
+ 
+        list_word_tag = [val for sublist in tag_sentences for val in sublist]
+        print(list_word_tag)
+        
+        return list_word_tag
 
 
     # La fonction tag :
@@ -160,64 +189,52 @@ class FrenchPreprocessing(object):
             
     # Suppression des stop_words
     def delete_stopwords(self, list_word_tag):
-        if list_word_tag == "ERROR : unknown character in text":
-            return "ERROR : unknown character in text"
-        else:
-            reduced_list_word_tag = []
-            for i in range(len(list_word_tag)):
-                e = list_word_tag[i][0]
-                if e.lower() not in self.stopwords:
-                    reduced_list_word_tag.append((e, list_word_tag[i][1]))
-            return reduced_list_word_tag
+        reduced_list_word_tag = []
+        for i in range(len(list_word_tag)):
+            e = list_word_tag[i][0]
+            if e.lower() not in self.stopwords:
+                reduced_list_word_tag.append((e, list_word_tag[i][1]))
+        return reduced_list_word_tag
     
     # Suppression des symboles 
     def delete_symbols(self, list_word_tag):
-        if list_word_tag == "ERROR : unknown character in text":
-            return "ERROR : unknown character in text"
-        else:
-            reduced_list_word_tag = []
-            for i in range(len(list_word_tag)):
-                e = list_word_tag[i]
-                if e[0] not in self.symbols :
-                    reduced_list_word_tag.append((e[0], e[1]))
-            return reduced_list_word_tag
+        reduced_list_word_tag = []
+        for i in range(len(list_word_tag)):
+            e = list_word_tag[i]
+            if e[0] not in self.symbols :
+                reduced_list_word_tag.append((e[0], e[1]))
+        return reduced_list_word_tag
     
     # Suppression de la ponctuation
     def delete_punct(self, list_word_tag):
-        if list_word_tag == "ERROR : unknown character in text":
-            return "ERROR : unknown character in text"
-        else:
-            reduced_list_word_tag = []
-            for i in range(len(list_word_tag)):
-                e = list_word_tag[i]
-                if e[0] not in self.punct :
-                    reduced_list_word_tag.append((e[0], e[1]))
-            return reduced_list_word_tag
+        reduced_list_word_tag = []
+        for i in range(len(list_word_tag)):
+            e = list_word_tag[i]
+            if e[0] not in self.punct :
+                reduced_list_word_tag.append((e[0], e[1]))
+        return reduced_list_word_tag
     
     # La fonction lemmatise :
     # - prend en argument une liste de tuples du type (mot de la liste, son tag)
     # - renvoie une liste qui contient les mots de la phrase lemmatisés (strings)
     def lemmatize(self, reduced_list_word_tag):
-        if reduced_list_word_tag == "ERROR : unknown character in text":
-            return "ERROR : unknown character in text"
-        else:
-            list_lemmatized = []
-            
-            for e in reduced_list_word_tag:
-                word = e[0].lower()
-                tag = e[1]
-                lexique = self.lexique 
-                # On lemmatise
-                if word in lexique.keys():
-                    dict_lemma = lexique[word]
-                    if tag in dict_lemma.keys():
-                        list_lemmatized.append(dict_lemma[tag])
-                    else:
-                        list_lemmatized.append(word)
+        list_lemmatized = []
+        
+        for e in reduced_list_word_tag:
+            word = e[0].lower()
+            tag = e[1]
+            lexique = self.lexique 
+            # On lemmatise
+            if word in lexique.keys():
+                dict_lemma = lexique[word]
+                if tag in dict_lemma.keys():
+                    list_lemmatized.append(dict_lemma[tag])
                 else:
                     list_lemmatized.append(word)
-                    
-            return " ".join(list_lemmatized)
+            else:
+                list_lemmatized.append(word)
+                
+        return " ".join(list_lemmatized)
     
     # Méthode qui réalise le préprocessing d'un texte en français 
     # Prend une string et retourne une string qui a subit 
