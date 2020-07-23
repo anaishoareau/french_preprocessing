@@ -95,21 +95,22 @@ class FrenchPreprocessing(object):
         for g in itertools.groupby(pretokens, key = lambda x: x not in ["!",".","?","..."]):
             pretokens_sentences.append(list(g[1]))
             not_ponct.append(g[0])
-        
+            
         sentences = []
         
-        if not_ponct[0]:
+        if not_ponct[0] and len(pretokens_sentences)>1:
             for i in range(0,len(pretokens_sentences)-1,2):
                 sentences.append(pretokens_sentences[i]+pretokens_sentences[i+1])
-        else:
+        elif not_ponct[0]==False and len(pretokens_sentences)>1:
             sentences.append(pretokens_sentences[0])
             for i in range(1,len(pretokens_sentences)-1,2):
                 sentences.append(pretokens_sentences[i]+pretokens_sentences[i+1])
-        
+        else:
+            sentences = pretokens_sentences
+            
         tag_sentences = []
 
         for s in sentences:
-
             tag_sentence = []
             
             # camemBERT tokenization
@@ -131,7 +132,7 @@ class FrenchPreprocessing(object):
                 for idx, label_idx in filtered_labels_idx:
                     entity = (self.tokenizer.convert_ids_to_tokens(int(input_ids[idx])), self.model.config.id2label[label_idx])
                     entities += [entity]
-                    
+   
                 # Reshape camemBERT outputs
                 entities_reshaped = []
                 for e in entities:
