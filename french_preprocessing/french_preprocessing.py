@@ -144,6 +144,7 @@ class FrenchPreprocessing(object):
                 for e in entities_reshaped:
                     if e[0] == '<unk>':
                         unk = True
+                        
                 if unk == False:    
                     entities_reshaped_2 = []
                     i,j = 0,0
@@ -164,7 +165,7 @@ class FrenchPreprocessing(object):
                             j+=1
                     tag_sentence = entities_reshaped_2
                 else:
-                    tag_sentence = entities_reshaped
+                    tag_sentence = [(e,'o') for e in s]
                     
             except:
                 tag_sentence = [(e,'o') for e in s]
@@ -251,75 +252,3 @@ class FrenchPreprocessing(object):
         reduced_list_word_tag = self.delete_punct(reduced_list_word_tag)
         lematized_string = self.lemmatize(reduced_list_word_tag)
         return lematized_string
-
-f = FrenchPreprocessing()
-import time
-
-def french_preprocessing_detail(x):
-    t0 = time.time()
-    tokens =f.pretokenize(x)
-    t1 = time.time()
-    tags = f.tag(tokens)
-    t2 = time.time()
-    delete_stop_words = f.delete_stopwords(tags)
-    t3 = time.time()
-    delete_punct = f.delete_punct(delete_stop_words)
-    t4 = time.time()
-    lemma = f.lemmatize(delete_punct)
-    print(lemma)
-    t5 = time.time()
-    return (t5-t0), (t1-t0), (t2-t1), (t3-t2), (t4-t3), (t5-t4)
-
-
-# x = """il n'y avait pas de communication DISI ni d'invitation d'audio d'incident majeur.\n\nDescription de l'impact à 
-# l'initialisation de l'audio :\nNous avons des alertes Witbe qui nous signalent depuis hier une dégradation sur l'application 
-# PE.FR- Espace Recruteur\nSuite à analyse de l'incident, on s'aperçoit que la remonté d'alerte est présente depuis hier soir.
-# \n\nLe problème se situe lorsqu'on essaye d'aller sur les pages entreprise.pole-emploi.fr puis qu'on sélectionne un service.
-# \nNous confirmons qu'il n'y a pas de remontée d'impact ressenti par les utilisateurs.\n\n\nSuivi de de l'audio :\n14h27 
-# ouverture de l'audio de suivi\n\nOn s'oriente vers la partie OpenAM du recruteur.\nC'est quand on accède sur les pages 
-# d OpenAM que nous avons ces messages d'erreurs aléatoires \nOn décide de passer en mode maintenance et de procéder aux arrêt 
-# relance des instances d'OpenAM en tournant\n\n15h06 mise en maintenance slz70u \n15h16 A/R des instance ps383 et ps382\n15h21 
-# remise en ligne de la slz70u\nNous allons procéder à une mise en maintenance successive des instances sur les 3 suivantes 
-# (slz71u, slz70v et slz71v)\n\n15h22 mise en maintenance de la 71u\nEt A/R des instances.\nEt réactivation des 
-# instances\n\n15h31 mise en maintenance des instances slz70v, A/R des instances et réactivation\n\n15h35 mise en 
-# maintenance des instances slz71v/R des instances et réactivation\n\n15h40 Les A/R tournant sont achevés avec 
-# succès \n\n15h43 nous avons toujours un disfonctionnement aléatoire.\nTout au long de nos actions les alertes s'acquittent 
-# et reviennent. Cette panne qui n'est pas une panne franche est complexe à analyser\n\nNous allons procéder à des mise en 
-# maintenance successive des instances OPENAM pour essayer d'identifier la brique fautive.\nA chaque mise en maintenance, 
-# les utilisateurs autour de l'audio testent la navigation sur le site. \n\n15h50 slz7Ou, ps383 et ps382\n15h54 slz70v, ps383 
-# et ps382\n15h55 slz71u, ps383 et ps382\n15h56 slz71v ps383 et ps382\n\nCela n'est pas concluant. On n'arrive pas à 
-# identifier la brique fautive\n\nPour certains utilisateurs autour de l'audio, ces derniers arrivent bien à naviguer 
-# correctement pour d'autres ils n' n'arrivent pas à afficher les premières pages espaces recruteurs\nQue cela soit d'un point 
-# d'accès interne ou externe.\n\n16h30 A/R des instances rweb sur slzacs car il n'y avait pas pas de fichier d'erreur log sur 
-# la partie RPC. Pas d'évolution. Le phénomène aléatoire persiste.\n\n16h47 le dysfonctionnement semble être maintenant localisé 
-# à la partie authentification sur l'espace recruteur. Cela est toujours de façon aléatoire, qu'on y accède depuis l'extérieur 
-# ou l'intérieur.\n\n16h52 A/R des instances rweb Px20B en cours\n\nOn notera qu'il n'y a pas de dysfonctionnement au niveau du 
-# BIGIP, suite à analyse IRT\n\n16h55 suite à la fin des A/R des instances des RPs, On constate que le service semble être 
-# revenu totalement. \nNous observons une chute des pages en erreurs sur RUEI.\n17h02 Confirmation que le service est optimale.
-# \n\n17h15 clôture de l'audio\n"""
-
-x = """il ny avait pas de communication DISI ni d'invitation d'audio d'incident majeur.\n\nDescription de l'impact à 
-l'initialisation de l'audio :\nNous avons des alertes Witbe qui nous signalent depuis hier une dégradation sur l'application 
-PE.FR- Espace Recruteur\nSuite à analyse de l'incident, on s'aperçoit que la remonté d'alerte est présente depuis hier soir.
-\n\nLe problème se situe lorsqu'on essaye d'aller sur les pages entreprise.pole-emploi.fr puis qu'on sélectionne un service.
-\nNous confirmons qu'il n'y a pas de remontée d'impact ressenti par les utilisateurs.\n\n\nSuivi de de l'audio :\n14h27 
-ouverture de l'audio de suivi\n\nOn s'oriente vers la partie OpenAM du recruteur.\nC'est quand on accède sur les pages 
-d OpenAM que nous avons ces messages d'erreurs aléatoires \nOn décide de passer en mode maintenance et de procéder aux arrêt 
-relance des instances d'OpenAM en tournant\n\n15h06 mise en maintenance slz70u \n15h16 A/R des instance ps383 et ps382\n15h21 
-remise en ligne de la slz70u\nNous allons procéder à une mise en maintenance successive des instances sur les 3 suivantes 
-(slz71u, slz70v et slz71v)\n\n15h22 mise en maintenance de la 71u\nEt A/R des instances.\nEt réactivation des 
-instances\n\n15h31 mise en maintenance des instances slz70v, A/R des instances et réactivation\n\n15h35 mise en 
-maintenance des instances slz71v/R des instances et réactivation\n\n15h40 Les A/R tournant sont achevés avec 
-succès \n\n15h43 nous avons toujours un disfonctionnement aléatoire.\nTout au long de nos actions les alertes s'acquittent 
-et reviennent. Cette panne qui n'est pas une panne franche est complexe à analyser\n\nNous allons procéder à des mise en 
-maintenance successive des instances OPENAM pour essayer d'identifier la brique fautive.\nA chaque mise en maintenance, 
-les utilisateurs autour de l'audio testent la navigation sur le site. \n\n15h50 slz7Ou, ps383 et ps382\n15h54 slz70v, ps383 
-et ps382\n15h55 slz71u, ps383 et ps382\n15h56 slz71v ps383 et ps382\n\nCela n'est pas concluant. On n'arrive pas à 
-identifier la brique fautive\n\n"""
-
-# x = """il n'y avait pas de communication DISI ni d'invitation d'audio d'incident majeur.\n\nDescription de l'impact à 
-# l'initialisation de l'audio :\nNous avons des alertes Witbe qui nous signalent depuis hier une dégradation sur l'application 
-# PE.FR- Espace Recruteur\nSuite à analyse de l'incident, on s'aperçoit que la remonté d'alerte est présente depuis hier soir.
-# \n\nLe problème se situe lorsqu'on essaye d'aller sur les pages entreprise.pole-emploi.fr puis qu'on sélectionne un service.
-# \nNous confirmons"""
-print(french_preprocessing_detail(x))
