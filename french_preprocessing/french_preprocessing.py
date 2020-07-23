@@ -79,8 +79,8 @@ class FrenchPreprocessing(object):
         # - Numéro de téléphone réduit
         # - Nom composé
         # - Mot courant
-        # - Ponctuation
-        pretokenizer = RegexpTokenizer(r'''(\w{2,}'\w+|\w'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-\.]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:@%/;$~_?\+\-=\\\.&\|£€]+[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\(\)\[\]\{\}\"\'\.,;\:\?!\-\_\*\#\§=+<>/\\])''')
+        # - Ponctuation |'\w{2,}'\w+
+        pretokenizer = RegexpTokenizer(r'''([Aa]ujourd'hui|\w+'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-\.]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:@%/;$~_?\+\-=\\\.&\|£€]+[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\(\)\[\]\{\}\"\'\.,;\:\?!\-\_\*\#\§=+<>/\\])''')
         pretokens = pretokenizer.tokenize(string)
         return pretokens
     
@@ -95,19 +95,23 @@ class FrenchPreprocessing(object):
         for g in itertools.groupby(pretokens, key = lambda x: x not in ["!",".","?","..."]):
             pretokens_sentences.append(list(g[1]))
             not_ponct.append(g[0])
-            
+
         sentences = []
-        
-        if not_ponct[0] and len(pretokens_sentences)>1:
-            for i in range(0,len(pretokens_sentences)-1,2):
+        cpt = 0
+        deb = 0
+        if len(pretokens_sentences)>1:
+            if not_ponct[0] == False:
+                cpt +=1
+                sentences.append(pretokens_sentences[0])
+                deb = 1
+            for i in range(deb,len(pretokens_sentences)-1,2):
                 sentences.append(pretokens_sentences[i]+pretokens_sentences[i+1])
-        elif not_ponct[0]==False and len(pretokens_sentences)>1:
-            sentences.append(pretokens_sentences[0])
-            for i in range(1,len(pretokens_sentences)-1,2):
-                sentences.append(pretokens_sentences[i]+pretokens_sentences[i+1])
+                cpt +=2
+            if cpt < len(pretokens_sentences):
+                sentences.append(pretokens_sentences[cpt])
         else:
             sentences = pretokens_sentences
-            
+
         tag_sentences = []
 
         for s in sentences:
@@ -115,8 +119,8 @@ class FrenchPreprocessing(object):
             
             # camemBERT tokenization
             try:
-                tokens = self.tokenizer(s, is_pretokenized = True, return_tensors="pt")["input_ids"] #, padding=True, truncation=True
-                input_ids = tokens[0] #, padding=True, truncation=True
+                tokens = self.tokenizer(s, is_pretokenized = True, return_tensors="pt")["input_ids"]
+                input_ids = tokens[0]
     
                 # Tagging
                 with torch.no_grad():
@@ -223,7 +227,8 @@ class FrenchPreprocessing(object):
     # La fonction lemmatise :
     # - prend en argument une liste de tuples du type (mot de la liste, son tag)
     # - renvoie une liste qui contient les mots de la phrase lemmatisés (strings)
-    def lemmatize(self, reduced_list_word_tag):
+    def lemmatize(self, reduced_list_word_tag, format_output = 'list'):
+        
         list_lemmatized = []
         
         for e in reduced_list_word_tag:
@@ -239,8 +244,13 @@ class FrenchPreprocessing(object):
                     list_lemmatized.append(word)
             else:
                 list_lemmatized.append(word)
-                
-        return " ".join(list_lemmatized)
+        
+        if format_output == 'string':
+            output = " ".join(list_lemmatized)
+        else:
+            output = list_lemmatized
+            
+        return output
     
     # Méthode qui réalise le préprocessing d'un texte en français 
     # Prend une string et retourne une string qui a subit 
@@ -251,5 +261,5 @@ class FrenchPreprocessing(object):
         reduced_list_word_tag = self.delete_stopwords(list_word_tag)
         reduced_list_word_tag = self.delete_symbols(reduced_list_word_tag)
         reduced_list_word_tag = self.delete_punct(reduced_list_word_tag)
-        lematized_string = self.lemmatize(reduced_list_word_tag)
+        lematized_string = self.lemmatize(reduced_list_word_tag, format_output = 'string')
         return lematized_string
