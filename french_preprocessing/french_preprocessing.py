@@ -224,6 +224,16 @@ class FrenchPreprocessing(object):
                 reduced_list_word_tag.append((e[0], e[1]))
         return reduced_list_word_tag
     
+    # Suppression des stopwords, symboles et ponctuation
+    def simplify(self, list_word_tag):
+        reduced_list_word_tag = []
+        for i in range(len(list_word_tag)):
+            e = list_word_tag[i][0]
+            if e not in self.stopwords and e not in self.symbols and e not in self.punct:
+                reduced_list_word_tag.append((e, list_word_tag[i][1]))
+        return reduced_list_word_tag
+    
+    
     # La fonction lemmatise :
     # - prend en argument une liste de tuples du type (mot de la liste, son tag)
     # - renvoie une liste qui contient les mots de la phrase lemmatisés (strings)
@@ -258,8 +268,9 @@ class FrenchPreprocessing(object):
     def preprocessing(self, string):
         pretokens = self.pretokenize(string)
         list_word_tag = self.tag(pretokens)
-        reduced_list_word_tag = self.delete_stopwords(list_word_tag)
-        reduced_list_word_tag = self.delete_symbols(reduced_list_word_tag)
-        reduced_list_word_tag = self.delete_punct(reduced_list_word_tag)
+        # reduced_list_word_tag = self.delete_stopwords(list_word_tag)
+        # reduced_list_word_tag = self.delete_symbols(reduced_list_word_tag)
+        # reduced_list_word_tag = self.delete_punct(reduced_list_word_tag)
+        reduced_list_word_tag = self.simplify(list_word_tag)
         lematized_string = self.lemmatize(reduced_list_word_tag, format_output = 'string')
         return lematized_string
