@@ -80,7 +80,7 @@ class FrenchPreprocessing(object):
         # - Nom composé
         # - Mot courant
         # - Ponctuation |'\w{2,}'\w+
-        pretokenizer = RegexpTokenizer(r'''([Aa]ujourd'hui|\w+'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-\.]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:@%/;$~_?\+\-=\\\.&\|£€]+[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\(\)\[\]\{\}\"\'\.,;\:\?!\-\_\*\#\§=+<>/\\])''')
+        pretokenizer = RegexpTokenizer(r'''([Aa]ujourd'hui|\w+'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-\.]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:@%/;$~_?\+\-=\\\.&\|£€]+[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\(\)\[\]\{\}\"\'\.,;\:\?!\-\_\*\#\§=+<>/\\\|])''')
         pretokens = pretokenizer.tokenize(string)
         return pretokens
     
