@@ -1,4 +1,4 @@
-# FRENCH PREPROCESSING
+# FrenchPreprocessing
 
 Package regroupant des outils de pré-traitement pour les textes en langue française : 
 tokenisation, simplification, tagging (Part-of-Speech tagging) et lemmatisation.
@@ -13,10 +13,14 @@ Vérifier que la commande pip est installée, ainsi que git : https://packaging.
 pip install git+https://github.com/anaishoareau/french_preprocessing.git
 ```
 
-#### ATTENTION : Cette commande installe aussi les dépendances (le package python nltk). Si vous rencontrez des problèmes, il faut l'installer à part.
+#### ATTENTION : Cette commande installe aussi les dépendances. Si vous rencontrez des problèmes, il faut les installer à part.
 
-Version utilisée : nltk - 3.4
+Versions utilisées :  
 
+nltk - 3.4  
+numpy - 1.18.1  
+torch - 1.5.1  
+transformers - 3.0.2  
 
 #### ATTENTON : Pour que le french_preprocessing fonctionne, il faut avoir installé java (JRE) : https://www.java.com/fr/download/ et donner le path du fichier java.exe à l'initialisation du FrenchPreprocessing, un exemple est proposé après.
 
@@ -42,9 +46,11 @@ du mot, utilisée dans les dictionnaires)
 - Synthétisation de trois lexiques en un seul (lexique.txt): Lexique des formes fléchies du français (LEFFF), le Lexique 3.83, et le lexique utilisé par la librairie python spaCy pour créer une base de données développée pour l'outil de lemmatisation.
 
 - Uniformisation des tags utilisés dans les deux lexiques (LEFFF et Lexique 3.83) et tagging des données du lexique de spaCy 
-à l'aide du StandfordPOSTagger pour intégrer le 'tag' en paramètre de l'outil de lemmatisation. Les tags du StanfordPOSTagger sont aussi uniformisés.
+à l'aide du StandfordPOSTagger pour intégrer le 'tag' en paramètre de l'outil de lemmatisation. Les tags du modèle CamemBERT sont aussi uniformisés.
 Les tags après uniformisation sont réduits à : 'v', 'nc', 'adj', 'c', 'npp', 'adv', 'det', 'pro', 
 'prep', 'i', 'ponct', 'cl', 'et'
+
+- Récupération du tagging effectué par CamemBERT avec gestion des séquences de plus de 512 tokens (tokens de la forme utilisée par le tokenizer RoBERTa).
 
 - Développement d'outils dans lexique_tools.py pour la modification du lexique afin de l'augmenter facilement, 
 sans compromettre les fichiers texte.
@@ -85,26 +91,19 @@ https://github.com/ClaudeCoulombe/FrenchLefffLemmatizer
 
 - spaCy, GitHub repository, https://github.com/explosion/spaCy
 
-#### StanfordPOSTagger :
+#### CamemBERT :
 
-- The Stanford Natural Language Processing Group. "Stanford Log-linear Part-Of-Speech Tagger". 
-https://nlp.stanford.edu/software/tagger.shtml
+-MARTIN Louis, MULLER Benjamin, SUÁREZ Pedro Javier Ortiz, et al. 2019. "Camembert: a tasty french language model." arXiv preprint arXiv:1911.03894. https://arxiv.org/abs/1911.03894
 
-- TOUTANOVA Kristina and MANNING Christopher. 2000. "Enriching the Knowledge Sources Used 
-in a Maximum Entropy Part-of-Speech Tagger". In Proceedings of the Joint SIGDAT Conference 
-on Empirical Methods in Natural Language Processing and Very Large Corpora (EMNLP/VLC-2000), pp. 63-70.
-
-- TOUTANOVA Kristina, KLEIN Dan, MANNING Christopher and SINGER Yoram. 2003. 
-"Feature-Rich Part-of-Speech Tagging with a Cyclic Dependency Network". In Proceedings 
-of HLT-NAACL 2003, pp. 252-259.
-
+- MARTIN Louis, MULLER Benjamin, SUÁREZ Pedro Javier Ortiz, et al. "Les modèles de langue contextuels Camembert pour le français: impact de la taille et de l'hétérogénéité des données d'entrainement." In : Actes de la 6e conférence conjointe Journées d'Études sur la Parole (JEP, 31e édition), Traitement Automatique des Langues Naturelles (TALN, 27e édition), Rencontre des Étudiants Chercheurs en Informatique pour le Traitement Automatique des Langues (RÉCITAL, 22e édition). Volume 2: Traitement Automatique des Langues Naturelles. ATALA, 2020. p. 54-65. https://hal.archives-ouvertes.fr/hal-02784755/
 
 ### Licences and Copyrights : 
 
 - License Lexique 3.83 : Attribution-ShareAlike 4.0 International, https://github.com/chrplr/openlexicon/blob/master/LICENSE.txt
 - License spaCy : The MIT License (MIT), https://github.com/explosion/spaCy/blob/master/LICENSE
 - Copyright spaCy : Copyright (C) 2016-2019 ExplosionAI GmbH, 2016 spaCy GmbH, 2015 Matthew Honnibal
-- License StanfordPOSTagger :  GNU General Public License, https://github.com/stanfordnlp/CoreNLP/blob/master/licenses/gpl-2.0/LICENSE.txt
+- Transformers : Apache License, https://github.com/huggingface/transformers/blob/master/LICENSE
+- License CamemBERT :  MIT License, https://camembert-model.fr/
 - FrenchLefffLemmatizer : Lesser General Public License For Linguistic Resources, https://github.com/ClaudeCoulombe/FrenchLefffLemmatizer/blob/master/LICENSE
 
 
@@ -132,9 +131,9 @@ fp = FrenchPreprocessing(java_path = "C:/Program Files (x86)/Java/jre1.8.0_251/b
 ```
 #### Méthodes de la classe FrenchPreprocessing :
 
-##### - fp.tokenize(string)
+##### - fp.pretokenize(string)
 
-Prend une string en entrée et retourne une liste de string formée des tokens 
+Prend une string en entrée et retourne une liste de string formée des prétokens 
 de la string d'entrée en enlevant les symboles inutiles : [token1, token2].
 
 Exemples :
