@@ -1,5 +1,7 @@
 # FrenchPreprocessing
 
+#### Utilisation du modèle CamemBERT pour le tagging.
+
 Package regroupant des outils de pré-traitement pour les textes en langue française : 
 tokenisation, simplification, tagging (Part-of-Speech tagging) et lemmatisation.
 
@@ -93,7 +95,7 @@ https://github.com/ClaudeCoulombe/FrenchLefffLemmatizer
 
 #### CamemBERT :
 
--MARTIN Louis, MULLER Benjamin, SUÁREZ Pedro Javier Ortiz, et al. 2019. "Camembert: a tasty french language model." arXiv preprint arXiv:1911.03894. https://arxiv.org/abs/1911.03894
+- MARTIN Louis, MULLER Benjamin, SUÁREZ Pedro Javier Ortiz, et al. 2019. "Camembert: a tasty french language model." arXiv preprint arXiv:1911.03894. https://arxiv.org/abs/1911.03894
 
 - MARTIN Louis, MULLER Benjamin, SUÁREZ Pedro Javier Ortiz, et al. "Les modèles de langue contextuels Camembert pour le français: impact de la taille et de l'hétérogénéité des données d'entrainement." In : Actes de la 6e conférence conjointe Journées d'Études sur la Parole (JEP, 31e édition), Traitement Automatique des Langues Naturelles (TALN, 27e édition), Rencontre des Étudiants Chercheurs en Informatique pour le Traitement Automatique des Langues (RÉCITAL, 22e édition). Volume 2: Traitement Automatique des Langues Naturelles. ATALA, 2020. p. 54-65. https://hal.archives-ouvertes.fr/hal-02784755/
 
