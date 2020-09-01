@@ -21,7 +21,7 @@ Versions utilisées :
 
 nltk - 3.4  
 numpy - 1.18.1  
-torch - 1.5.1 (Informations d'installation : https://pytorch.org/)
+torch - 1.5.1 (Informations d'installation : https://pytorch.org/)   
 transformers - 3.0.2  
 
 #### ATTENTON : Pour que le french_preprocessing fonctionne, il faut avoir installé java (JRE) : https://www.java.com/fr/download/ et donner le path du fichier java.exe à l'initialisation du FrenchPreprocessing, un exemple est proposé après.
