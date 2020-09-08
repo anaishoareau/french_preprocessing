@@ -169,7 +169,7 @@ Exemple :
 ```python
 string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
-fp.tag(fp.tokenize(string))
+fp.tag(fp.pretokenize(string))
 
 >>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('.', 'ponct'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('!', 'ponct'), ('(', 'det'), ('un', 'det'), ('jour', 'det'), (',', 'ponct'), ("j'", 'cl'), ('en', 'cl'), ('suis', 'v'), ('certaine', 'adj'), (',', 'ponct'), ('ils', 'cl'), ('contrôleront', 'v'), ('le', 'det'), ('monde', 'nc'), ('...', 'ponct'), (')', 'det'), ('#', 'det'), ('chats', 'nc'), ('#', 'det'), ('révolution', 'nc')]
 ```
@@ -185,7 +185,7 @@ Exemple :
 
 string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
-fp.delete_stopwords(fp.tag(fp.tokenize(string)))
+fp.delete_stopwords(fp.tag(fp.pretokenize(string)))
 
 >>> [("j'", 'cl'), ('aime', 'v'), ('chats', 'nc'), ('.', 'ponct'), ('vraiment', 'adv'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('!', 'ponct'), ('(', 'det'), ('jour', 'det'), (',', 'ponct'), ("j'", 'cl'), ('certaine', 'adj'), (',', 'ponct'), ('ils', 'cl'), ('contrôleront', 'v'), ('monde', 'nc'), ('...', 'ponct'), (')', 'det'), ('#', 'det'), ('chats', 'nc'), ('#', 'det'), ('révolution', 'nc')]
 ```
@@ -199,7 +199,7 @@ Exemple :
 ```python
 string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
-fp.delete_punct(fp.delete_stop_words(fp.tag(fp.tokenize(string))))
+fp.delete_punct(fp.delete_stop_words(fp.tag(fp.pretokenize(string))))
 
 >>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('.', 'ponct'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('!', 'ponct'), ('un', 'det'), ('jour', 'det'), (',', 'ponct'), ("j'", 'cl'), ('en', 'cl'), ('suis', 'v'), ('certaine', 'adj'), (',', 'ponct'), ('ils', 'cl'), ('contrôleront', 'v'), ('le', 'det'), ('monde', 'nc'), ('...', 'ponct'), ('chats', 'nc'), ('révolution', 'nc')]
 ```
@@ -213,7 +213,7 @@ Exemple :
 ```python
 string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
-fp.delete_punct(fp.delete_stop_words(fp.tag(fp.tokenize(string))))
+fp.delete_punct(fp.delete_stop_words(fp.tag(fp.pretokenize(string))))
 
 >>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('(', 'det'), ('un', 'det'), ('jour', 'det'), ("j'", 'cl'), ('en', 'cl'), ('suis', 'v'), ('certaine', 'adj'), ('ils', 'cl'), ('contrôleront', 'v'), ('le', 'det'), ('monde', 'nc'), (')', 'det'), ('#', 'det'), ('chats', 'nc'), ('#', 'det'), ('révolution', 'nc')]
 ```
@@ -228,7 +228,7 @@ Exemple :
 ```python
 string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
-fp.lemmatize(fp.delete_punct(fp.delete_symbols(fp.delete_stopwords(fp.tag(fp.tokenize(string))))))
+fp.lemmatize(fp.delete_punct(fp.delete_symbols(fp.delete_stopwords(fp.tag(fp.pretokenize(string))))))
 
 >>> je aimer chat vraiment être supérieur jour je certain il contrôler monde chat révolution
 ```
