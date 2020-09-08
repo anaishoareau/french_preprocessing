@@ -24,8 +24,6 @@ numpy - 1.18.1
 torch - 1.5.1 (Informations d'installation : https://pytorch.org/)   
 transformers - 3.0.2  
 
-#### ATTENTON : Pour que le french_preprocessing fonctionne, il faut avoir installé java (JRE) : https://www.java.com/fr/download/ et donner le path du fichier java.exe à l'initialisation du FrenchPreprocessing, un exemple est proposé après.
-
 ## Objectifs et réalisations du projet
 
 ### Création d'un outil complet de préprocessing pour le français : 
@@ -129,7 +127,7 @@ Initialisation de l'outil :
 ```python
 from french_preprocessing.french_preprocessing import FrenchPreprocessing
 
-fp = FrenchPreprocessing(java_path = "C:/Program Files (x86)/Java/jre1.8.0_251/bin/java.exe", stopwords = default_stopwords, symbols = default_symbols, punct = default_punct)
+fp = FrenchPreprocessing(stopwords = default_stopwords, symbols = default_symbols, punct = default_punct)
 ```
 #### Méthodes de la classe FrenchPreprocessing :
 
@@ -152,11 +150,11 @@ Mon numéro de téléphone est le 06 02 02 02 02 mais on peut aussi me joindre a
 
 # Applications de la méthode tokenize
 
-fp.tokenize(string)
+fp.pretokenize(string)
 
 >>> ["J'", 'aime', 'les', 'chats', '.', 'Ce', 'sont', 'vraiment', 'des', 'êtres', 'supérieurs', '!', '(', 'Un', 'jour', ',', "j'", 'en', 'suis', 'certaine', ',', 'ils', 'contrôleront', 'le', 'monde', '...', ')', '#', 'chats', '#', 'révolution']
 
-fp.tokenize(complex_string)
+fp.pretokenize(complex_string)
 
 >>> ["Aujourd'hui", "j'", 'ai', 'plein', "d'", 'adresses', 'à', 'tester', 'comme', 'http://test.com/eelg/', '.', 'En', 'voici', 'quelques', 'unes', ':', 'https://www.example.com/', ',', 'www.example.com/etcetc', ',', 'example.com/etcetc', ',', 'mais', "j'", 'ai', 'aussi', 'des', 'adresses', 'emails', ':', 'zeofjreoigjerigjer@gmail.com', 'et', 'krjr@offo.edu.au', '.', 'Voici', "d'", 'autres', 'tests', ';', 'user:pass@example.com/etcetc', 'www.exemple.com', 'et', 'example.com/etcetc?query=aasd', '.', 'Mon', 'numéro', 'de', 'téléphone', 'est', 'le', '06.02.02.02.02', 'mais', 'on', 'peut', 'aussi', 'me', 'joindre', 'au', '07.02.02.02.02', '!']
 ```
